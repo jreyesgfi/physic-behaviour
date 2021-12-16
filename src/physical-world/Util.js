@@ -41,14 +41,13 @@ export function setUp(){
     // add all of the bodies to the world
     Composite.add(engine.world, [boxA, boxB, ground, mouseConstraint]);
     // define the createObjects
-    var boxC = new SquareCustom({
-      functToCreate:()=> {
-        console.log('creando objecto')
-        const newObject = Bodies.rectangle(400, 400, 40, 40);
-        Composite.add(engine.world,newObject);
-        return newObject;
-      } 
-    });
+    try{
+      var boxC = new SquareCustom({
+        world:engine.world
+      });
+    }
+    catch(e){console.log(e)}
+    
     // run the renderer
     Render.run(render);
 
