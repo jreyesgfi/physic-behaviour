@@ -10,7 +10,7 @@ import Square from './customHtmlPhysicObjects/Square';
 
 
 function App() {
-  useEffect(()=>{setUp();}, []);
+  //useEffect(()=>{setUp();}, []);
   return (
     <div className="App">
       <Scene>

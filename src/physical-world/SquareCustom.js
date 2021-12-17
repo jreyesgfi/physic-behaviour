@@ -17,7 +17,7 @@ export default class SquareCustom extends React.Component {
 
         this.state = {y:this.body.y}
         this.translate();
-        console.log(this.body)
+
     }
 
     translate(){
