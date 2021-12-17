@@ -1,3 +1,8 @@
-.physicalSquare{
-    transition: trannsform 1s;
+.reachArea{
+    border-radius: 50%;
+    background-color: rgba(200,30,170, 0.7);
+    align-content:center;
+    width:fit-content;
+    height: fit-content;
+    box-sizing: content-box;
 }
