@@ -17,6 +17,7 @@ export default class SquareCustom extends React.Component {
 
         this.state = {y:this.body.y}
         this.translate();
+        console.log(this.body)
     }
 
     translate(){
@@ -25,7 +26,6 @@ export default class SquareCustom extends React.Component {
     }
         
     render(){
-        console.log(this.state.y)
         return(
             <Body.rectangle x={this.x} y={this.y} width={this.lado} height={this.lado}>
             </Body.rectangle>

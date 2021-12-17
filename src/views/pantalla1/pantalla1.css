@@ -1,0 +1,31 @@
+.pantalla1{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background: var(--primario-claro-color);
+    z-index: 0;
+}
+.contenedor-titulo-pantalla{
+
+    justify-content: left;
+    text-align: left;
+    color: var(--primario-oscuro-color);
+   
+    width: 35vw;
+
+    top:40vh;
+    position:absolute;
+    left:0;
+    margin-left: min(5vw, 50px);
+
+    z-index: 5;
+}
+
+
+@media only screen and (max-width: 500px){
+
+}
+@media only screen and (min-width: 900px){
+
+}
+

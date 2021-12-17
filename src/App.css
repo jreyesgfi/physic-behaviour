@@ -1,5 +1,12 @@
+:root {
+  --primario-oscuro-color : rgb(26, 51, 61);
+  --primario-claro-color: rgb(206, 247, 215);
+}
+
+
 .App {
   text-align: center;
+  overflow-x: hidden;
 }
 
 .App-logo {
@@ -35,4 +42,20 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.size-small{
+  display: none;
+}
+@media only screen and (max-width: 500px){
+  .size-normal{
+      display: none;
+  }
+  .size-small{
+      display: inline-block;
+  }
+}
+@media only screen and (min-width: 900px){
+
 }

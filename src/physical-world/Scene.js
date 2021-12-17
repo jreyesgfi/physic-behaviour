@@ -21,12 +21,13 @@ class Scene extends React.Component {
     });
 
     var render = Render.create({
-      element: this.refs.scene,
+      element: document.body,
       engine: engine,
       options: {
         width: 600,
         height: 600,
-        wireframes: false
+        wireframes: false,
+        background: 'rgb(255,0,0)' 
       }
     });
 
@@ -60,9 +61,14 @@ class Scene extends React.Component {
       World.add(engine.world, Bodies.circle(150, 50, 30, { restitution: 0.7 }));
     });
 
-    Engine.run(engine);
+    Matter.Runner.run(engine);
 
     Render.run(render);
+
+    // Store the reference to the render
+    this.setState({
+        render: render  
+    })
   }
 
   render() {
