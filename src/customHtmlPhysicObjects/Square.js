@@ -6,14 +6,25 @@ export default class Square extends React.Component {
         super(props);
         this.x= props.x || 150;
         this.y = props.y || 150;
+        this.velX = 0;
+        this.velY = 3;
         this.lado = props.lado || 100;
-        this.state = {y:70}
+        this.state = {y:400, onMovement:true}
         this.onClick = this.onClick.bind(this);
    
     }
     onClick(){
-        console.log('La posición es: (',this.x, this.y,').')
-        this.setState({y :this.state.y +10}) 
+        if (this.state.onMovement==true){
+            console.log('La posición es: (',this.x, this.state.y,').')
+            this.setState({y :this.state.y + this.velY},
+                async ()=>{
+                    const delay = ms => new Promise(res => setTimeout(res, ms));
+                    await delay(20)
+                    this.onClick()
+                })
+        }
+        
+
     }
     render(){
         const style=
@@ -22,8 +33,8 @@ export default class Square extends React.Component {
             width: String(this.lado) + 'px',
             height: String(this.lado) +'px',
             position: 'absolute',
-            top: String(this.x) + 'px',
-            left: String(this.state.y) + 'px',
+            top: String(this.state.y) + 'px',
+            left: String(this.x) + 'px',
             //backgroundImage: 'url(' + imgUrl + ')'
         }  
         
