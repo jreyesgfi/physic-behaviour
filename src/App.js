@@ -7,6 +7,7 @@ import { setUp } from './physical-world/Util';
 import Scene from './physical-world/Scene';
 import Pantalla1 from './views/pantalla1/pantalla1';
 import Square from './customHtmlPhysicObjects/Square';
+import Ground from './customHtmlPhysicObjects/Ground';
 
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
       </Pantalla1>
       <Square>
       </Square>
+      <Ground>
+      </Ground>
     </div>
   );
   

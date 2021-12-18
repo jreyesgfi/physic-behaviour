@@ -3,17 +3,20 @@ import Body from "./Body";
 import './customObjects.css'
 import { globalA, globalTimeSpan } from "./physicConstants";
 
-export default class Square extends Body {
+export default class Ground extends Body {
 
-    constructor(props){
+    constructor(){
         try{
-            const lado = props.lado || 100
-            let newProps = props;
+            let props = {
+                width : 400,
+                height: 30,
+                x: 0,
+                y:600,
+            }
             super(props);
         }
         catch(error){
             console.log(error)
-            super(props)
         }
     }
 }
