@@ -5,15 +5,16 @@ import { globalA, globalTimeSpan } from "./physicConstants";
 
 export default class Ground extends Body {
 
-    constructor(){
+    constructor(props){
         try{
-            let props = {
+            let newProps = {
                 width : 400,
                 height: 30,
                 x: 0,
-                y:600,
+                y:200,
+                engine: props.engine,
             }
-            super(props);
+            super(newProps);
         }
         catch(error){
             console.log(error)

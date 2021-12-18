@@ -9,7 +9,6 @@ export default class Body extends React.Component {
         this.y = props.y || 150;
         this.velX = 0;
         this.velY = 0;
-        console.log(props.width)
         this.width = props.width || 100;
         this.height = props.height || 150;
         this.state = {
@@ -17,7 +16,16 @@ export default class Body extends React.Component {
             y:props.y || 100,
             onMovement:true }
         this.onClick = this.onClick.bind(this);
+        this.vertices = this.vertices.bind(this);
+        this.setOnMovement = this.setOnMovement.bind(this);
         this.clicked = false
+
+
+        // add this body to the worl controlled by the engine
+        this.engine = props.engine;
+        this.engine.addObject(this);
+
+        
 
 
         // Tries
