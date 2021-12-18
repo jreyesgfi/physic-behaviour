@@ -49,6 +49,11 @@ export default class Body extends React.Component {
                 })
         }
     }
+    setOnMovement(newValue){
+        this.setState({
+            onMovement:newValue
+        })
+    }
 
     vertices(){
 

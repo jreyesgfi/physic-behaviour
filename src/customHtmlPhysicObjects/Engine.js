@@ -15,8 +15,16 @@ class Engine {
         let index = 0
         for (let body1 of this.objectsInWorld) {
             for (let body2 of this.objectsInWorld.slice(index + 1, this.objectsInWorld.length)) {
+                
+                // First check if any vertix of body1 is in body2
+                const collide = this.areColliding2(body1,body2);
 
-                console.log(body1, body2)
+                // If not try the other way
+                if (!collide){
+                    collide = this.areColliding2(body2,body1);
+                }
+
+                body1.state.setOnMovement(!collide);
 
             }
             //  check the boundaries constraints 
@@ -28,6 +36,67 @@ class Engine {
             index += 1;
         }
     }
+
+
+    // The new version of are colliding
+    areColliding2(body1,body2){
+        
+        // retrieve the data
+        const body1Vertices= body1.vercites[0];
+        const [body2Vertices, body2Center] = body2.vercites();
+
+        // check the angle between a center and a vertix of body2 from the vertix of body1
+
+        // define the var collide to sign up the collides
+
+        let collide = 0
+        collide += body1Vertices.foreach(vertix1 => {
+            return body2Vertices.foreach(vertix2 => {
+
+                ///////////////////////////////////////////7
+                // Define the two vectors with common point in vertix1
+
+                // vertix to vertix
+                const vector1 = vertix1.map((coordenate, index) => {
+                    return coordenate - vertix2[index];
+                })
+
+                // vertix to center
+                const vector2 = vertix2.map((coordenate, index) => {
+                    return coordenate - body2Center[index];
+                })
+
+                //////////////////////////////////////////////////
+                // Evaluate the dot product// obtain the dot product
+                const dotProduct = 0;
+                dotProduct += vector1.foreach((coordenate, index) => coordenate * vector2[index]);
+
+                // if dot product is positive, the body1Vertix is in body2Shape
+                if (dotProduct >= 0) {
+                    return 1;
+                }
+                return 0;
+            })
+        })
+
+        // if at any moment the return was 1 they collide
+        if (collide > 0) {
+            return true
+        }
+
+        // else false
+        return false
+
+
+
+
+    }
+
+
+
+
+
+
 
     // Return if two bodies are colliding or not
     areColliding(body1, body2) {
