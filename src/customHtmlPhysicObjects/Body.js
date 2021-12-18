@@ -23,7 +23,7 @@ export default class Body extends React.Component {
 
         // add this body to the worl controlled by the engine
         this.engine = props.engine;
-        this.engine.addObject(this);
+        this.engine.addBody(this);
 
         
 

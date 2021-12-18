@@ -9,15 +9,22 @@ export class Engine {
         this.leftWall = null;
         this.rightWall = null;
         this.objectsInWorld = [];
-        this.addObject = this.addObject.bind(this);
 
+
+        this.addBody = (body) => {
+            console.log(this.objectsInWorld);
+            this.objectsInWorld.push(body);
+            console.log(this.objectsInWorld);
+        }
         //start the timer
         this.timer();
     }
 
 
     addObject(body){
+        console.log(this.objectsInWorld)
         this.objectsInWorld.push(body);
+        console.log(this.objectsInWorld)
     }
 
 
@@ -47,11 +54,13 @@ export class Engine {
 
     // check all the possible collisions
     checkCollisions() {
-
+        console.log(this.objectsInWorld)
         let index = 0
         for (let body1 of this.objectsInWorld) {
             for (let body2 of this.objectsInWorld.slice(index + 1, this.objectsInWorld.length)) {
                 
+                //
+                console.log(body1,body2)
 
                 // First check if any vertix of body1 is in body2
                 let collide = this.areColliding2(body1,body2);
