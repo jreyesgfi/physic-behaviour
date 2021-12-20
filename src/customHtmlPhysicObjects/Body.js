@@ -35,15 +35,15 @@ export default class Body extends React.Component {
     onClick(){
         this.velX = -this.velX*0.3;
         this.velY = -this.velY*0.3;
-        if (this.clicked == false){
-            this.clicked = true;
-            this.onMovement();
-        }
+        
+        // Iniciamos el movimiento
+        this.setOnMovement(true);
 
     }
 
     onMovement(){
         // Check if the movement is available
+        console.log(this.state.onMovement)
         if (this.state.onMovement==true){
 
             // If it is, it changes the position
@@ -58,9 +58,10 @@ export default class Body extends React.Component {
         }
     }
     setOnMovement(newValue){
+        console.log('cambiando el movimiento')
         this.setState({
             onMovement:newValue
-        })
+        }, () => this.onMovement());
     }
 
     vertices(){

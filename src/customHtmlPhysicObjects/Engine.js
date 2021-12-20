@@ -36,13 +36,13 @@ export class Engine {
 
             // wait to re-evaluate the configuration
             const delay = ms => new Promise(res => setTimeout(res, ms));
-            await delay(globalTimeSpan);
+            await delay(globalTimeSpan*100);
 
             // check the collisions and stop the bodies
             this.checkCollisions();
 
             // repeat again
-            //this.timer();
+            this.timer();
 
 
         }
@@ -54,32 +54,30 @@ export class Engine {
 
     // check all the possible collisions
     checkCollisions() {
-        console.log(this.objectsInWorld)
         let index = 0
         for (let body1 of this.objectsInWorld) {
             for (let body2 of this.objectsInWorld.slice(index + 1, this.objectsInWorld.length)) {
 
-                //
-                console.log(body1, body2);
 
                 if (body1 != body2) {
                     // First check if any vertix of body1 is in body2
                     let collide = this.areColliding2(body1, body2);
 
-                    //
-                    console.log('First check done', body1, body2)
 
                     // If not try the other way
                     if (!collide) {
                         collide = this.areColliding2(body2, body1);
                     }
 
-                    console.log('Second check done', body1, body2)
-
                     if (collide) {
-                        console.log('Han chocado')
+                        console.log('they are colliding');
                     }
-                    body1.setOnMovement(!collide);
+                    try{
+                        body1.setOnMovement(!collide);
+                    }
+                    catch(error){(console.log(error))}
+                    //body1.setOnMovement(!collide);
+                    //body2.setOnMovement(!collide);
 
                 }
 
@@ -99,59 +97,46 @@ export class Engine {
 
         // check the angle between a center and a vertix of body2 from the vertix of body1
 
-        // define the var collide to sign up the collides
+        
+        // define the var collide to break the loop if we found a collision
+        let collide = false
+        while (collide == false){
 
-        let collide = 0
+            body1Vertices.forEach(vertix1 => {
+                body2Vertices.forEach(vertix2 => {
+    
+                    ///////////////////////////////////////////7
+                    // Define the two vectors with common point in vertix1
+    
+                    // vertix to vertix
+                    const vector1 = vertix2.map((coordenate, index) => {
+                        return coordenate - vertix1[index];
+                    })
+    
+                    // vertix to center
+                    const vector2 = vertix2.map((coordenate, index) => {
+                        return coordenate - body2Center[index];
+                    })
 
-        collide += body1Vertices.forEach(vertix1 => {
-            return body2Vertices.forEach(vertix2 => {
-
-                ///////////////////////////////////////////7
-                // Define the two vectors with common point in vertix1
-
-                // vertix to vertix
-                const vector1 = vertix1.map((coordenate, index) => {
-                    return coordenate - vertix2[index];
+                    //////////////////////////////////////////////////
+                    // Evaluate the dot product// obtain the dot product
+                    let dotProduct = 0;
+                    
+                    // We use map to create the array an track it coordenates and reduce to keep the dotProduct value
+                    dotProduct += vector1.map((coordenate, index) => {
+                        return coordenate * vector2[index];
+                    }).reduce((m, n) => m + n);
+    
+                    // if dot product is positive, the body1Vertix is in body2Shape
+                    if (dotProduct <= 0) {
+                        collide = true;
+                    }
                 })
-
-                // vertix to center
-                const vector2 = vertix2.map((coordenate, index) => {
-                    // console.log(vertix2,)
-                    // console.log(body2Center,body2Center[index])
-                    return coordenate - body2Center[index];
-                })
-                console.log(vector1, vector2)
-                //////////////////////////////////////////////////
-                // Evaluate the dot product// obtain the dot product
-                let dotProduct = 0;
-                
-                // We use map to create the array an track it coordenates and reduce to keep the dotProduct value
-                dotProduct += vector1.forEach((coordenate, index) => {
-                    console.log(coordenate,vector2[index])
-                    console.log('the dotproduct is', dotProduct)
-                    console.log(coordenate * vector2[index])
-                    return coordenate * vector2[index]
-                });
-                console.log(dotProduct)
-
-                // if dot product is positive, the body1Vertix is in body2Shape
-                if (dotProduct <= 0) {
-                    return 1;
-                }
-                return 0;
             })
-        })
 
-        // if at any moment the return was 1 they collide
-        if (collide > 0) {
-            return true
         }
-
-        // else false
-        return false
-
-
-
+        // we return the collide outcome
+        return collide;
 
     }
 
