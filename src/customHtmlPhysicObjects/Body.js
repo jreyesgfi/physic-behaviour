@@ -3,10 +3,10 @@ import './customObjects.css'
 import { globalA, globalTimeSpan } from "./physicConstants";
 export default class Body extends React.Component {
 
+    // we should add the key parameter
+
     constructor(props){
         super(props);
-        this.x= props.x || 150;
-        this.y = props.y || 150;
         this.velX = 0;
         this.velY = 0;
         this.width = props.width || 100;
@@ -68,13 +68,13 @@ export default class Body extends React.Component {
         return [
             // Pass the vertices
             [
-                [this.x,this.y],
-                [this.x + this.width, this.y],
-                [this.x, this.y + this.height],
-                [this.x + this.width, this.heihgt]
+                [this.state.x,this.state.y],
+                [this.state.x + this.width, this.state.y],
+                [this.state.x, this.state.y + this.height],
+                [this.state.x + this.width, this.state.y + this.height]
             ],
             // Pass the center
-            [this.x + this.width/2, this.y + this.height/2]
+            [this.state.x + this.width/2, this.state.y + this.height/2]
     ]
     }
 

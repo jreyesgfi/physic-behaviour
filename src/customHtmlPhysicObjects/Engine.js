@@ -21,7 +21,7 @@ export class Engine {
     }
 
 
-    addObject(body){
+    addObject(body) {
         console.log(this.objectsInWorld)
         this.objectsInWorld.push(body);
         console.log(this.objectsInWorld)
@@ -30,9 +30,9 @@ export class Engine {
 
 
     // the timer
-    async timer(){
-        try{
-        // call himself after a period of time creating a loop over the time
+    async timer() {
+        try {
+            // call himself after a period of time creating a loop over the time
 
             // wait to re-evaluate the configuration
             const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -46,8 +46,8 @@ export class Engine {
 
 
         }
-    
-        catch(error){
+
+        catch (error) {
             console.log(error);
         }
     }
@@ -58,22 +58,30 @@ export class Engine {
         let index = 0
         for (let body1 of this.objectsInWorld) {
             for (let body2 of this.objectsInWorld.slice(index + 1, this.objectsInWorld.length)) {
-                
+
                 //
-                console.log(body1,body2)
+                console.log(body1, body2);
 
-                // First check if any vertix of body1 is in body2
-                let collide = this.areColliding2(body1,body2);
+                if (body1 != body2) {
+                    // First check if any vertix of body1 is in body2
+                    let collide = this.areColliding2(body1, body2);
 
-                // If not try the other way
-                if (!collide){
-                    collide = this.areColliding2(body2,body1);
+                    //
+                    console.log('First check done', body1, body2)
+
+                    // If not try the other way
+                    if (!collide) {
+                        collide = this.areColliding2(body2, body1);
+                    }
+
+                    console.log('Second check done', body1, body2)
+
+                    if (collide) {
+                        console.log('Han chocado')
+                    }
+                    body1.setOnMovement(!collide);
+
                 }
-
-                if (collide){
-                    console.log('Han chocado')
-                }
-                body1.setOnMovement(!collide);
 
             }
             //  check the boundaries constraints 
@@ -83,10 +91,10 @@ export class Engine {
 
 
     // The new version of are colliding
-    areColliding2(body1,body2){
-        
+    areColliding2(body1, body2) {
+
         // retrieve the data
-        const body1Vertices= body1.vertices()[0];
+        const body1Vertices = body1.vertices()[0];
         const [body2Vertices, body2Center] = body2.vertices();
 
         // check the angle between a center and a vertix of body2 from the vertix of body1
@@ -94,7 +102,7 @@ export class Engine {
         // define the var collide to sign up the collides
 
         let collide = 0
-        
+
         collide += body1Vertices.forEach(vertix1 => {
             return body2Vertices.forEach(vertix2 => {
 
@@ -108,13 +116,23 @@ export class Engine {
 
                 // vertix to center
                 const vector2 = vertix2.map((coordenate, index) => {
+                    // console.log(vertix2,)
+                    // console.log(body2Center,body2Center[index])
                     return coordenate - body2Center[index];
                 })
-                console.log(vector1,vector2)
+                console.log(vector1, vector2)
                 //////////////////////////////////////////////////
                 // Evaluate the dot product// obtain the dot product
                 let dotProduct = 0;
-                dotProduct += vector1.forEach((coordenate, index) => coordenate * vector2[index]);
+                
+                // We use map to create the array an track it coordenates and reduce to keep the dotProduct value
+                dotProduct += vector1.forEach((coordenate, index) => {
+                    console.log(coordenate,vector2[index])
+                    console.log('the dotproduct is', dotProduct)
+                    console.log(coordenate * vector2[index])
+                    return coordenate * vector2[index]
+                });
+                console.log(dotProduct)
 
                 // if dot product is positive, the body1Vertix is in body2Shape
                 if (dotProduct <= 0) {
@@ -201,7 +219,7 @@ export class Engine {
     //     const body1ChosenVertices = [vertixChosed11, vertixChosed12];
     //     const body2ChosenVertices = [vertixChosed21, vertixChosed22];
 
-        
+
     //     let collide = 0;
 
     //     // body1Center body2ChosenVertices
