@@ -121,7 +121,7 @@ export default class Body extends React.Component {
     render(){
         const style=
         {
-            background:'red',
+            background:'blue',
             width: String(this.width) + 'px',
             height: String(this.height) +'px',
             position: 'absolute',

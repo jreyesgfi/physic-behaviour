@@ -42,7 +42,7 @@ export default class Engine {
         this.checkCollisions();
 
         // repeat again
-        this.timer();
+        // this.timer();
     }
 
     // check all the possible collisions
@@ -66,10 +66,9 @@ export default class Engine {
                     try {
                         console.log('changing the movement to ', !collide)
                         body1.setOnMovement(!collide);
+                        body2.setOnMovement(!collide);
                     }
                     catch (error) { (console.log(error)) }
-                    //body1.setOnMovement(!collide);
-                    //body2.setOnMovement(!collide);
 
                 }
 
@@ -87,40 +86,62 @@ export default class Engine {
         const [body1Vertices, body1Center] = body1.vertices();
         const [body2Vertices, body2Center] = body2.vertices();
 
-        // check the angle between a center and a vertix of body2 from the vertix of body1
+        //  create the couple of vertices licked
+        let verticesCouples = body2Vertices.map((vertix,index)=>{
 
-
+            // if we are in the last vertix we bring back to the start point
+            if (index==body2Vertices.length()){
+                return [vertix,body2Vertices[0]]
+            }
+            return [vertix,body2Vertices[index]]
+        });
+        
         // initialize the collide value to false
         let collide = false;
 
+        // check if any vertix1 for the body1 have two opposite vertix of body2, 180degres
         body1Vertices.forEach(vertix1 => {
-            body2Vertices.forEach(vertix2 => {
+            verticesCouples.forEach(verticeCouple => {
 
                 // Check if we have already reached a collision
                 if (collide == false) {
 
-                    ///////////////////////////////////////////7
+                    //////////////////////////////////
                     // Define the two vectors with common point in vertix1
 
-                    // vertix to vertix
-                    const vector1 = vertix2.map((coordenate, index) => {
+                    // for each vector in vectors
+                    const vectors = verticesCouples.map().
+
+                    // for each coordenate in vector
+                    map((coordenate, index) => {
                         return coordenate - vertix1[index];
                     })
 
-                    // vertix to center
-                    const vector2 = vertix2.map((coordenate, index) => {
-                        return coordenate - body1Center[index];
-                    })
+                    /////////////////////////////////////
+                    // define the vector module
+
+                    const productModules = vectors.map((vector)=>{
+                        // each vector module
+                        vector.reduce((c1,c2) => (c1^2 + c2^2)^0.5)
+                    }).reduce((m1,m2)=> m1 * m2 )
 
 
                     //////////////////////////////////////////////////
-                    // Evaluate the dot product// obtain the dot product
-                    let dotProduct = 0;
+                    // Evaluate the dot product
 
                     // We use map to create the array an track it coordenates and reduce to keep the dotProduct value
-                    dotProduct += vector1.map((coordenate, index) => {
-                        return coordenate * vector2[index];
-                    }).reduce((m, n) => m + n);
+                    dotProduct = vectors.reduce((p,c)=>{
+                        p[0] * c[0] + p[1]*c[1]
+                    })
+
+                    // dotProduct = vectors[0].map((coordenate, index) => {
+                    //     return coordenate * vectors[1][index];
+                    // }).reduce((m, n) => m + n);
+
+                    ////////////////////////////////////////
+                    // obtain the cos(angle) and compare to -1
+                    const cosAngle = 
+                    if ()
 
 
                     // if dot product is positive, the body1Vertix is in body2Shape
@@ -136,143 +157,5 @@ export default class Engine {
         return collide;
 
     }
-
-
-
-
-
-
-
-    // // Return if two bodies are colliding or not
-    // areColliding(body1, body2) {
-    //     // T=top, B=bottom, L=left, R=right
-    //     // const [body1TL, body1TR, body1BL, body1BR, body1center] = body1.vercites()
-
-    //     const [body1vertices, body1center] = body1.vercites();
-    //     const [body2vertices, body2center] = body2.vercites();
-
-    //     // Define the distance between 
-    //     // the vertix of body1 and the center of body2
-    //     let vertixChosed11 = null;
-    //     let vertixChosed12 = null;
-
-    //     body1vertices.forEach(vertix => {
-    //         // define the distance calculating the squares of the diferences
-    //         diference = 0;
-    //         diference += vertix.forEach((coordenate, index) => (coordenate - body2center[index]) ** 2);
-
-    //         // select the two closer to the other center
-    //         if (!vertixChosed11 || diference < vertixChosed11[1]) {
-    //             vertixChosed11 = [vertix, diference]
-    //         }
-    //         else if (!vertixChosed12 || diference < vertixChosed12[1]) {
-    //             vertixChosed12 = [vertix, diference]
-    //         }
-    //     }
-    //     )
-    //     // vertix of body2 and the center of body1
-    //     let vertixChosed21 = null;
-    //     let vertixChosed22 = null;
-
-    //     body2vertices.forEach(vertix => {
-    //         // define the distance calculating the squares of the diferences
-    //         diference = 0;
-    //         diference += vertix.forEach((coordenate, index) => (coordenate - body1center[index]) ** 2);
-
-    //         // select the two closer to the other center
-    //         if (!vertixChosed21 || diference < vertixChosed21[1]) {
-    //             vertixChosed21 = [vertix, diference];
-    //         }
-    //         else if (!vertixChosed22 || diference < vertixChosed22[1]) {
-    //             vertixChosed22 = [vertix, diference];
-    //         }
-    //     }
-    //     )
-
-    //     // check if they are too spaced to touch each other
-    //     diagonal2 += body2vertices[0].forEach((coordenate, index) => (coordenate - body2center[index]) ** 2)
-    //     diagonal2 = diagonal2 ** 0.5
-    //     // if the closer point of body1 is further away than the point of body2 to the center2, they dont collide
-    //     if (vertixChosed11[1] ** 0.5 > diagonal2) {
-    //         return false
-    //     }
-
-    //     // Determine if they collide
-    //     const body1ChosenVertices = [vertixChosed11, vertixChosed12];
-    //     const body2ChosenVertices = [vertixChosed21, vertixChosed22];
-
-
-    //     let collide = 0;
-
-    //     // body1Center body2ChosenVertices
-    //     collide += body2ChosenVertices.forEach(vertix2 => {
-
-    //         return body1ChosenVertices.forEach(vertix1 => {
-
-    //             // obtain the two vectors
-
-    //             // the vector vertixBody2 centerBody1
-    //             const vector2 = vertix2.map((coordenate, index) => {
-    //                 return coordenate - body1center[index];
-    //             })
-
-    //             // the vector vertixBody1 centerBody1
-    //             const vector1 = vertix1.map((coordenate, index) => {
-    //                 return coordenate - body1center[index];
-    //             })
-
-    //             // obtain the dot product
-    //             const dotProduct = 0
-    //             dotProduct += vector1.forEach((coordenate, index) => coordenate * vector2[index])
-
-    //             // if dot product is positive, the body2Vertix is in body1Shape
-    //             if (dotProduct >= 0) {
-    //                 return 1;
-    //             }
-    //             return 0;
-
-    //         })
-
-    //     })
-
-    //     // body2Center body1ChosenVertices
-    //     collide += body1ChosenVertices.forEach(vertix1 => {
-
-    //         return body2ChosenVertices.forEach(vertix2 => {
-
-    //             // obtain the two vectors
-
-    //             // the vector vertixBody2 centerBody1
-    //             const vector2 = vertix2.map((coordenate, index) => {
-    //                 return coordenate - body2center[index];
-    //             })
-
-    //             // the vector vertixBody1 centerBody1
-    //             const vector1 = vertix1.map((coordenate, index) => {
-    //                 return coordenate - body2center[index];
-    //             })
-
-    //             // obtain the dot product
-    //             const dotProduct = 0
-    //             dotProduct += vector1.forEach((coordenate, index) => coordenate * vector2[index])
-
-    //             // if dot product is positive, the body2Vertix is in body1Shape
-    //             if (dotProduct >= 0) {
-    //                 return 1;
-    //             }
-    //             return 0;
-
-    //         })
-
-    //     })
-
-    //     // if at any moment the return was 1 they collide
-    //     if (collide > 0) {
-    //         return true
-    //     }
-    //     else {
-    //         return false
-    //     }
-    // }
 
 }
