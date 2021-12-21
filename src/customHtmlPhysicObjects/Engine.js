@@ -42,23 +42,27 @@ export default class Engine {
         this.checkCollisions();
 
         // repeat again
-        // this.timer();
+        //this.timer();
     }
 
     // check all the possible collisions
     checkCollisions() {
         let index = 0
+        
         for (let body1 of this.objectsInWorld) {
             for (let body2 of this.objectsInWorld.slice(index + 1, this.objectsInWorld.length)) {
 
 
                 if (body1 != body2) {
+                    
                     // First check if any vertix of body1 is in body2
                     let collide = this.areColliding2(body1, body2);
 
                     // If not try the other way
                     if (!collide) {
+
                         collide = this.areColliding2(body2, body1);
+
                     }
 
                     if (collide) {
@@ -88,33 +92,36 @@ export default class Engine {
 
         //  create the couple of vertices licked
         let verticesCouples = body2Vertices.map((vertix,index)=>{
-
             // if we are in the last vertix we bring back to the start point
-            if (index==body2Vertices.length()){
-                return [vertix,body2Vertices[0]]
+            if (index==body2Vertices.length-1){
+                return [vertix,vertix]
             }
-            return [vertix,body2Vertices[index]]
+            return [vertix,body2Vertices[index+1]]
         });
+        console.log(verticesCouples)
         
         // initialize the collide value to false
         let collide = false;
-
+        
         // check if any vertix1 for the body1 have two opposite vertix of body2, 180degres
         body1Vertices.forEach(vertix1 => {
-            verticesCouples.forEach(verticeCouple => {
-
+            verticesCouples.forEach(verticesCouple => {
+                
                 // Check if we have already reached a collision
                 if (collide == false) {
-
+                    
+                    
                     //////////////////////////////////
                     // Define the two vectors with common point in vertix1
 
                     // for each vector in vectors
-                    const vectors = verticesCouples.map().
-
-                    // for each coordenate in vector
-                    map((coordenate, index) => {
-                        return coordenate - vertix1[index];
+                    const vectors = verticesCouple.map((vector)=>{
+                        console.log(vector)
+                        // for each coordenate in vector
+                        return vector.map((coordenate, index) => {
+                            // obtain the difference
+                            return coordenate - vertix1[index];
+                        });
                     })
 
                     /////////////////////////////////////
@@ -122,16 +129,16 @@ export default class Engine {
 
                     const productModules = vectors.map((vector)=>{
                         // each vector module
-                        vector.reduce((c1,c2) => (c1^2 + c2^2)^0.5)
+                        return vector.reduce((c1,c2) => (c1^2 + c2^2)^0.5)
                     }).reduce((m1,m2)=> m1 * m2 )
 
-
+                    
                     //////////////////////////////////////////////////
                     // Evaluate the dot product
 
                     // We use map to create the array an track it coordenates and reduce to keep the dotProduct value
-                    dotProduct = vectors.reduce((p,c)=>{
-                        p[0] * c[0] + p[1]*c[1]
+                    const dotProduct = vectors.reduce((v1,v2)=>{
+                        return v1[0] * v2[0] + v1[1] * v2[1];
                     })
 
                     // dotProduct = vectors[0].map((coordenate, index) => {
@@ -140,14 +147,13 @@ export default class Engine {
 
                     ////////////////////////////////////////
                     // obtain the cos(angle) and compare to -1
-                    const cosAngle = 
-                    if ()
+                    const cosAngle = dotProduct / productModules;
+                    console.log(cosAngle)
 
-
-                    // if dot product is positive, the body1Vertix is in body2Shape
-                    if (dotProduct < 0) {
+                    // if the cos in close to -1 the vertix is into the body2
+                    if (cosAngle > -1.02 && cosAngle < -0.98){
                         collide = true;
-                    }
+                    } 
 
                 }
 

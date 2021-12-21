@@ -73,7 +73,7 @@ export default class Body extends React.Component {
                 this.velY += globalA *globalTimeSpan /1000;
                 
                 console.log(this.id, this.state.y)
-                this.setState({y :this.state.y + this.velY},()=>{this.continueMovement()});
+                this.setState({y :this.state.y + this.velY},()=>{/*this.continueMovement()*/});
             }
         }
         catch(error){
