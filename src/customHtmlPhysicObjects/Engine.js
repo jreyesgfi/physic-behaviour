@@ -3,7 +3,7 @@ import { globalTimeSpan } from "./physicConstants";
 /**  The Object that keeps the tracking of the objects and 
  * detect its collides
 */
-export class Engine {
+export default class Engine {
     constructor(props) {
         this.ground = null;
         this.leftWall = null;
@@ -12,20 +12,21 @@ export class Engine {
 
 
         this.addBody = (body) => {
-            console.log(this.objectsInWorld);
+
             this.objectsInWorld.push(body);
-            console.log(this.objectsInWorld);
+
         }
+
         //start the timer
         this.timer();
     }
 
 
-    addObject(body) {
-        console.log(this.objectsInWorld)
-        this.objectsInWorld.push(body);
-        console.log(this.objectsInWorld)
-    }
+    // addObject(body) {
+    //     console.log(this.objectsInWorld)
+    //     this.objectsInWorld.push(body);
+    //     console.log(this.objectsInWorld)
+    // }
 
 
 
@@ -36,13 +37,13 @@ export class Engine {
 
             // wait to re-evaluate the configuration
             const delay = ms => new Promise(res => setTimeout(res, ms));
-            await delay(globalTimeSpan*100);
+            await delay(globalTimeSpan * 100);
 
             // check the collisions and stop the bodies
             this.checkCollisions();
 
             // repeat again
-            this.timer();
+            //this.timer();
 
 
         }
@@ -63,19 +64,23 @@ export class Engine {
                     // First check if any vertix of body1 is in body2
                     let collide = this.areColliding2(body1, body2);
 
+                    //
+                    console.log(body1, body2)
 
                     // If not try the other way
                     if (!collide) {
                         collide = this.areColliding2(body2, body1);
                     }
+                    console.log('Están chocando ', collide)
 
                     if (collide) {
                         console.log('they are colliding');
                     }
-                    try{
-                        body1.setOnMovement(!collide);
+                    try {
+                        console.log('Están chocando ', collide)
+                        //body1.setOnMovement(!collide);
                     }
-                    catch(error){(console.log(error))}
+                    catch (error) { (console.log(error)) }
                     //body1.setOnMovement(!collide);
                     //body2.setOnMovement(!collide);
 
@@ -97,22 +102,24 @@ export class Engine {
 
         // check the angle between a center and a vertix of body2 from the vertix of body1
 
-        
-        // define the var collide to break the loop if we found a collision
-        let collide = false
-        while (collide == false){
 
-            body1Vertices.forEach(vertix1 => {
-                body2Vertices.forEach(vertix2 => {
-    
+        // initialize the collide value to false
+        let collide = false;
+
+        body1Vertices.forEach(vertix1 => {
+            body2Vertices.forEach(vertix2 => {
+
+                // Check if we have already reached a collision
+                if (collide == false) {
+
                     ///////////////////////////////////////////7
                     // Define the two vectors with common point in vertix1
-    
+
                     // vertix to vertix
                     const vector1 = vertix2.map((coordenate, index) => {
                         return coordenate - vertix1[index];
                     })
-    
+
                     // vertix to center
                     const vector2 = vertix2.map((coordenate, index) => {
                         return coordenate - body2Center[index];
@@ -121,20 +128,23 @@ export class Engine {
                     //////////////////////////////////////////////////
                     // Evaluate the dot product// obtain the dot product
                     let dotProduct = 0;
-                    
+
                     // We use map to create the array an track it coordenates and reduce to keep the dotProduct value
                     dotProduct += vector1.map((coordenate, index) => {
                         return coordenate * vector2[index];
                     }).reduce((m, n) => m + n);
-    
+
                     // if dot product is positive, the body1Vertix is in body2Shape
-                    if (dotProduct <= 0) {
+                    if (dotProduct < 0) {
+                        console.log('Negative escalar product')
                         collide = true;
                     }
-                })
-            })
 
-        }
+                }
+
+            })
+        })
+
         // we return the collide outcome
         return collide;
 

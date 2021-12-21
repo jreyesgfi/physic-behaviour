@@ -7,9 +7,8 @@ export default class Square extends Body {
 
     constructor(props){
         try{
-            const lado = props.lado || 100
-            let newProps = props;
-            super(props);
+            let newProps = {...props, lado: 100};
+            super(newProps);
         }
         catch(error){
             console.log(error)
