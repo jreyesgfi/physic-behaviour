@@ -36,7 +36,7 @@ export default class Engine {
 
         // wait to re-evaluate the configuration
         const delay = ms => new Promise(res => setTimeout(res, ms));
-        await delay(globalTimeSpan * 40);
+        await delay(globalTimeSpan);
 
         // check the collisions and stop the bodies
         this.checkCollisions();

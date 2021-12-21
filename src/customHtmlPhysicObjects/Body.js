@@ -48,10 +48,7 @@ export default class Body extends React.Component {
          // add this body to the world controlled by the engine
          this.engine.addBody(this);
          console.log(this.engine.objectsInWorld);
-
     }
-
-
 
     onClick(){
         this.velX = -this.velX*0.3;
@@ -59,35 +56,41 @@ export default class Body extends React.Component {
         
         // Iniciamos el movimiento
         this.setOnMovement(true);
-
     }
 
     async continueMovement(){
-        // Check if the movement is available
-        console.log(this.state.onMovement)
-        if (this.state.onMovement==true){
+        try{
+            // Check if the movement is available
+            console.log(this.state.onMovement)
+            if (this.state.onMovement==true){
 
-            // change the speed value
-            console.log('here')
-            const delay = ms => new Promise(res => setTimeout(res, ms));
-            
-            await delay(globalTimeSpan);
-            
-            this.velY += globalA *globalTimeSpan /1000;
-            
-            console.log(this.id, this.state.y)
-            this.setState({y :this.state.y + this.velY},this.continueMovement());
+                // change the speed value
+                console.log('here')
+                const delay = ms => new Promise(res => setTimeout(res, ms));
+                
+                await delay(globalTimeSpan);
+                
+                this.velY += globalA *globalTimeSpan /1000;
+                
+                console.log(this.id, this.state.y)
+                this.setState({y :this.state.y + this.velY},()=>{this.continueMovement()});
+            }
         }
+        catch(error){
+            console.log(error);
+        }
+
     }
+
     setOnMovement(newValue){
 
         // verify if the current value is changing
         if (this.state.onMovement != newValue){
-            console.log('i am going to cry')
             this.setState({
                 onMovement : newValue,
             }, () => {
-                console.log('please help');
+                // calling the loop of movement
+                this.continueMovement();
               }); 
 
         }
