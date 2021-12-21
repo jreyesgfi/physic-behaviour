@@ -32,25 +32,17 @@ export default class Engine {
 
     // the timer
     async timer() {
-        try {
-            // call himself after a period of time creating a loop over the time
+        // call himself after a period of time creating a loop over the time
 
-            // wait to re-evaluate the configuration
-            const delay = ms => new Promise(res => setTimeout(res, ms));
-            await delay(globalTimeSpan * 400);
+        // wait to re-evaluate the configuration
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+        await delay(globalTimeSpan * 40);
 
-            // check the collisions and stop the bodies
-            this.checkCollisions();
+        // check the collisions and stop the bodies
+        this.checkCollisions();
 
-            // repeat again
-            this.timer();
-
-
-        }
-
-        catch (error) {
-            console.log(error);
-        }
+        // repeat again
+        this.timer();
     }
 
     // check all the possible collisions
@@ -72,7 +64,7 @@ export default class Engine {
                     if (collide) {
                     }
                     try {
-                        console.log('changing the movement to ',!collide)
+                        console.log('changing the movement to ', !collide)
                         body1.setOnMovement(!collide);
                     }
                     catch (error) { (console.log(error)) }
@@ -119,7 +111,7 @@ export default class Engine {
                     const vector2 = vertix2.map((coordenate, index) => {
                         return coordenate - body1Center[index];
                     })
-                    
+
 
                     //////////////////////////////////////////////////
                     // Evaluate the dot product// obtain the dot product
