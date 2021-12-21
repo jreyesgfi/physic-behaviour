@@ -37,13 +37,13 @@ export default class Engine {
 
             // wait to re-evaluate the configuration
             const delay = ms => new Promise(res => setTimeout(res, ms));
-            await delay(globalTimeSpan * 100);
+            await delay(globalTimeSpan * 400);
 
             // check the collisions and stop the bodies
             this.checkCollisions();
 
             // repeat again
-            //this.timer();
+            this.timer();
 
 
         }
@@ -64,21 +64,16 @@ export default class Engine {
                     // First check if any vertix of body1 is in body2
                     let collide = this.areColliding2(body1, body2);
 
-                    //
-                    console.log(body1, body2)
-
                     // If not try the other way
                     if (!collide) {
                         collide = this.areColliding2(body2, body1);
                     }
-                    console.log('Están chocando ', collide)
 
                     if (collide) {
-                        console.log('they are colliding');
                     }
                     try {
-                        console.log('Están chocando ', collide)
-                        //body1.setOnMovement(!collide);
+                        console.log('changing the movement to ',!collide)
+                        body1.setOnMovement(!collide);
                     }
                     catch (error) { (console.log(error)) }
                     //body1.setOnMovement(!collide);
@@ -97,7 +92,7 @@ export default class Engine {
     areColliding2(body1, body2) {
 
         // retrieve the data
-        const body1Vertices = body1.vertices()[0];
+        const [body1Vertices, body1Center] = body1.vertices();
         const [body2Vertices, body2Center] = body2.vertices();
 
         // check the angle between a center and a vertix of body2 from the vertix of body1
@@ -122,8 +117,9 @@ export default class Engine {
 
                     // vertix to center
                     const vector2 = vertix2.map((coordenate, index) => {
-                        return coordenate - body2Center[index];
+                        return coordenate - body1Center[index];
                     })
+                    
 
                     //////////////////////////////////////////////////
                     // Evaluate the dot product// obtain the dot product
@@ -134,9 +130,9 @@ export default class Engine {
                         return coordenate * vector2[index];
                     }).reduce((m, n) => m + n);
 
+
                     // if dot product is positive, the body1Vertix is in body2Shape
                     if (dotProduct < 0) {
-                        console.log('Negative escalar product')
                         collide = true;
                     }
 
@@ -144,7 +140,6 @@ export default class Engine {
 
             })
         })
-
         // we return the collide outcome
         return collide;
 

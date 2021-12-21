@@ -26,6 +26,7 @@ export default class Body extends React.Component {
             onMovement:true };
         this.onClick = this.onClick.bind(this);
         this.vertices = this.vertices.bind(this);
+        this.onMovement = this.onMovement.bind(this);
         this.setOnMovement = this.setOnMovement.bind(this);
         this.clicked = false
 
@@ -58,7 +59,7 @@ export default class Body extends React.Component {
 
     onMovement(){
         // Check if the movement is available
-        console.log(this.state.onMovement)
+        console.log("In movement: ", this.state.onMovement)
         if (this.state.onMovement==true){
 
             // If it is, it changes the position
@@ -73,10 +74,11 @@ export default class Body extends React.Component {
         }
     }
     setOnMovement(newValue){
-        console.log('cambiando el movimiento')
         this.setState({
             onMovement:newValue
-        }, () => this.onMovement());
+        }, () => 
+        {   console.log(this.state.onMovement)
+            this.onMovement()});
     }
 
     vertices(){
@@ -91,7 +93,8 @@ export default class Body extends React.Component {
             ],
             // Pass the center
             [this.state.x + this.width/2, this.state.y + this.height/2]
-    ]
+            
+        ]
     }
 
     checkColissions(){}
@@ -108,7 +111,7 @@ export default class Body extends React.Component {
             height: String(this.height) +'px',
             position: 'absolute',
             top: String(this.state.y) + 'px',
-            left: String(this.x) + 'px',
+            left: String(this.state.x) + 'px',
             //backgroundImage: 'url(' + imgUrl + ')'
         }  
         
