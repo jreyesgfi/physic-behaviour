@@ -11,7 +11,7 @@ export default class Ground extends Body {
                 width : 400,
                 height: 400,
                 x: 50,
-                y:320,
+                y:500,
                 engine: props.engine,
             }
             super(newProps);

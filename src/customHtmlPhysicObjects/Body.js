@@ -7,7 +7,7 @@ export default class Body extends React.Component {
     static id = 0;
 
 
-    constructor(props){
+    constructor(props) {
         // change de id
         const id = Body.id;
         Body.id += 1;
@@ -15,16 +15,22 @@ export default class Body extends React.Component {
         super(props);
 
         this.state = {
-            x:props.x || 100,
-            y:props.y || 100,
-            onMovement: false };
+            x: props.x || 100,
+            y: props.y || 100,
+            onMovement: false
+        };
 
-
+        // dinamic
         this.id = id;
         this.velX = 0;
         this.velY = 0;
         this.width = props.width || 100;
         this.height = props.height || 150;
+
+        // style
+        this.background = props.background || 'blue';
+
+
 
         this.onClick = this.onClick.bind(this);
         this.vertices = this.vertices.bind(this);
@@ -34,18 +40,7 @@ export default class Body extends React.Component {
 
 
         this.engine = props.engine;
-
-        // style
-        this.style=
-        {
-            background:'blue',
-            width: String(this.width) + 'px',
-            height: String(this.height) +'px',
-            position: 'absolute',
-            top: String(this.state.y) + 'px',
-            left: String(this.state.x) + 'px',
-            //backgroundImage: 'url(' + imgUrl + ')'
-        } 
+        
 
     }
 
@@ -54,83 +49,95 @@ export default class Body extends React.Component {
     // start up the component
     componentDidMount() {
 
-         // add this body to the world controlled by the engine
-         this.engine.addBody(this);
-         console.log(this.engine.objectsInWorld);
+        // add this body to the world controlled by the engine
+        this.engine.addBody(this);
+        console.log(this.engine.objectsInWorld);
     }
 
-    onClick(){
-        this.velX = -this.velX*0.3;
-        this.velY = -this.velY*0.3;
-        
+    onClick() {
+        this.velX = -this.velX * 0.3;
+        this.velY = -this.velY * 0.3;
+
         // Iniciamos el movimiento
         this.setOnMovement(true);
     }
 
-    async continueMovement(){
-        try{
+    async continueMovement() {
+        try {
             // Check if the movement is available
-            if (this.state.onMovement==true){
+            if (this.state.onMovement == true) {
 
                 // change the speed value
                 const delay = ms => new Promise(res => setTimeout(res, ms));
-                
+
                 await delay(globalTimeSpan);
-                
-                this.velY += globalA *globalTimeSpan /1000;
-                
-                //this.setState({y :this.state.y + this.velY},()=>{this.continueMovement()});
+
+                this.velY += globalA * globalTimeSpan / 200;
+
+                this.setState({ y: this.state.y + this.velY }, () => { this.continueMovement() });
             }
         }
-        catch(error){
+        catch (error) {
             console.log(error);
         }
 
     }
 
-    setOnMovement(newValue){
+    setOnMovement(newValue) {
 
         // verify if the current value is changing
-        if (this.state.onMovement != newValue){
+        if (this.state.onMovement != newValue) {
             this.setState({
-                onMovement : newValue,
+                onMovement: newValue,
             }, () => {
                 // calling the loop of movement
                 this.continueMovement();
-              }); 
+            });
 
         }
     }
 
-    vertices(){
+    vertices() {
 
         return [
             // Pass the vertices
             [
-                [this.state.x,this.state.y],
+                [this.state.x, this.state.y],
                 [this.state.x + this.width, this.state.y],
                 [this.state.x, this.state.y + this.height],
                 [this.state.x + this.width, this.state.y + this.height]
             ],
             // Pass the center
-            [this.state.x + this.width/2, this.state.y + this.height/2]
-            
+            [this.state.x + this.width / 2, this.state.y + this.height / 2]
+
         ]
     }
 
-    checkColissions(){}
+    checkColissions() { }
 
 
 
 
 
-    render(){ 
-        
+    render() {
+        // style
+        this.style =
+        {
+            background: this.background,
+            width: String(this.width) + 'px',
+            height: String(this.height) + 'px',
+            position: 'absolute',
+            top: String(this.state.y) + 'px',
+            left: String(this.state.x) + 'px',
+            //backgroundImage: 'url(' + imgUrl + ')'
+        }
+
+
         return (
-            <div  
-            style={this.style} 
-            className="physicalSquare"
-            onClick={this.onClick}>
+            <div
+                style={this.style}
+                className="physicalSquare"
+                onClick={this.onClick}>
                 {this.state.y}
             </div>
         )

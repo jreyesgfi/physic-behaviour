@@ -42,7 +42,7 @@ export default class Engine {
         this.checkCollisions();
 
         // repeat again
-        //this.timer();
+        this.timer();
     }
 
     // check all the possible collisions
@@ -94,7 +94,7 @@ export default class Engine {
         let verticesCouples = body2Vertices.map((vertix,index)=>{
             // if we are in the last vertix we bring back to the start point
             if (index==body2Vertices.length-1){
-                return [vertix,vertix]
+                return [vertix,body2Vertices[0]]
             }
             return [vertix,body2Vertices[index+1]]
         });
@@ -127,7 +127,7 @@ export default class Engine {
 
                     const productModules = vectors.map((vector)=>{
                         // each vector module
-                        return vector.reduce((c1,c2) => (c1^2 + c2^2)^0.5)
+                        return vector.reduce((c1,c2) => (c1**2 + c2**2)**0.5)
                     }).reduce((m1,m2)=> m1 * m2 )
 
                     
@@ -146,11 +146,11 @@ export default class Engine {
                     ////////////////////////////////////////
                     // obtain the cos(angle) and compare to -1
                     const cosAngle = dotProduct / productModules;
-                    console.log(cosAngle)
+                    //console.log(vectors[0], vectors[1], dotProduct, productModules)
+                    //console.log(vertix1, verticesCouple[0],verticesCouple[1], cosAngle)
 
                     // if the cos in close to -1 the vertix is into the body2
-                    if (cosAngle > -1.02 && cosAngle < -0.98){
-                        console.log("Negativeeeeeeeeeeeeeeeee valueeee")
+                    if (cosAngle > -1.003 && cosAngle < -0.997){
                         collide = true;
                     } 
 
