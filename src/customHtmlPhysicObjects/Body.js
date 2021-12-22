@@ -28,7 +28,7 @@ export default class Body extends React.Component {
         this.height = props.height || 150;
 
         // style
-        this.background = props.background || 'blue';
+        this.background = props.background || 'var(--primario-oscuro-color)';
 
 
 
