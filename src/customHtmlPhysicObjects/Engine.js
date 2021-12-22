@@ -98,7 +98,6 @@ export default class Engine {
             }
             return [vertix,body2Vertices[index+1]]
         });
-        console.log(verticesCouples)
         
         // initialize the collide value to false
         let collide = false;
@@ -116,7 +115,6 @@ export default class Engine {
 
                     // for each vector in vectors
                     const vectors = verticesCouple.map((vector)=>{
-                        console.log(vector)
                         // for each coordenate in vector
                         return vector.map((coordenate, index) => {
                             // obtain the difference
@@ -152,6 +150,7 @@ export default class Engine {
 
                     // if the cos in close to -1 the vertix is into the body2
                     if (cosAngle > -1.02 && cosAngle < -0.98){
+                        console.log("Negativeeeeeeeeeeeeeeeee valueeee")
                         collide = true;
                     } 
 

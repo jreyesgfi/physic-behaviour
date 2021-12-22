@@ -9,9 +9,9 @@ export default class Ground extends Body {
         try{
             let newProps = {
                 width : 400,
-                height: 30,
+                height: 400,
                 x: 50,
-                y:250,
+                y:320,
                 engine: props.engine,
             }
             super(newProps);
@@ -19,5 +19,26 @@ export default class Ground extends Body {
         catch(error){
             console.log(error)
         }
+    }
+
+
+    // overwrite the method to avoid the gravity
+    async continueMovement(){
+        try{
+            // Check if the movement is available
+            if (this.state.onMovement==true){
+
+                // change the speed value
+                const delay = ms => new Promise(res => setTimeout(res, ms));
+                
+                await delay(globalTimeSpan);
+                
+                this.setState({y :this.state.y + this.velY},()=>{this.continueMovement()});
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+
     }
 }

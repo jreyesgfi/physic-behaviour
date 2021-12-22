@@ -35,8 +35,17 @@ export default class Body extends React.Component {
 
         this.engine = props.engine;
 
-        // Tries
-        let array = [3,23,16,4,5]
+        // style
+        this.style=
+        {
+            background:'blue',
+            width: String(this.width) + 'px',
+            height: String(this.height) +'px',
+            position: 'absolute',
+            top: String(this.state.y) + 'px',
+            left: String(this.state.x) + 'px',
+            //backgroundImage: 'url(' + imgUrl + ')'
+        } 
 
     }
 
@@ -61,19 +70,16 @@ export default class Body extends React.Component {
     async continueMovement(){
         try{
             // Check if the movement is available
-            console.log(this.state.onMovement)
             if (this.state.onMovement==true){
 
                 // change the speed value
-                console.log('here')
                 const delay = ms => new Promise(res => setTimeout(res, ms));
                 
                 await delay(globalTimeSpan);
                 
                 this.velY += globalA *globalTimeSpan /1000;
                 
-                console.log(this.id, this.state.y)
-                this.setState({y :this.state.y + this.velY},()=>{/*this.continueMovement()*/});
+                //this.setState({y :this.state.y + this.velY},()=>{this.continueMovement()});
             }
         }
         catch(error){
@@ -118,21 +124,11 @@ export default class Body extends React.Component {
 
 
 
-    render(){
-        const style=
-        {
-            background:'blue',
-            width: String(this.width) + 'px',
-            height: String(this.height) +'px',
-            position: 'absolute',
-            top: String(this.state.y) + 'px',
-            left: String(this.state.x) + 'px',
-            //backgroundImage: 'url(' + imgUrl + ')'
-        }  
+    render(){ 
         
         return (
             <div  
-            style={style} 
+            style={this.style} 
             className="physicalSquare"
             onClick={this.onClick}>
                 {this.state.y}
