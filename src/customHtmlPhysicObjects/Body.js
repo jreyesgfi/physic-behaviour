@@ -3,7 +3,8 @@ import React from "react";
 import './customObjects.css'
 import { globalA, globalTimeSpan, powerLimit, reboundCoef } from "./physicConstants";
 
-import s1 from './../sounds/s1.mp3'
+import s1 from './../sounds/s1.wav'
+
 export default class Body extends React.Component {
     // we should add the key parameter
     static id = 0;
@@ -19,6 +20,7 @@ export default class Body extends React.Component {
         this.state = {
             x: props.x || 100,
             y: props.y || 100,
+            angle: props.angle || 0,
             onMovement: false
         };
 
@@ -62,14 +64,22 @@ export default class Body extends React.Component {
 
     setPositionClicked(position) {
         this.posClicked = position;
+
+        //if is static set the speed to 0
+        if (this.static){
+                this.velX = 0;
+                this.velY = 0;
+        }
     }
 
     handleDrag(event) {
         const newPosClicked = [event.screenX,event.screenY];
         if (this.posClicked){
+
             // move the difference
             this.velX = newPosClicked[0] - this.posClicked[0];
             this.velY = newPosClicked[1] - this.posClicked[1];
+
             this.setState({ 
                 x: this.state.x + this.velX, 
                 y: this.state.y + this.velY
@@ -77,6 +87,7 @@ export default class Body extends React.Component {
 
             // set the position had clicked
             this.posClicked = newPosClicked;
+            
         }
         
     }
@@ -152,6 +163,7 @@ export default class Body extends React.Component {
             position: 'absolute',
             top: String(this.state.y) + 'px',
             left: String(this.state.x) + 'px',
+            transform: 'rotate('+String(this.state.angle)+'deg)',
             //backgroundImage: 'url(' + imgUrl + ')'
         }
 

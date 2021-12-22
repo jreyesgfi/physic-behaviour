@@ -9,7 +9,8 @@ export default class Square extends Body {
         try{
             let newProps = {...props,
                 height: 45,
-                width: 45, 
+                width: 45,
+                angle:45,
                 background: '#30a14e'};
             super(newProps);
         }

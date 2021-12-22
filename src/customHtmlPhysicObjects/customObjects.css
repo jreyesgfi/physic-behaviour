@@ -6,3 +6,7 @@
     height: fit-content;
     box-sizing: content-box;
 }
+.physicalSquare{
+    transform: rotate(30deg);
+    background-color: rgba(200,30,170, 0.7);
+}
