@@ -26,6 +26,7 @@ export default class Body extends React.Component {
         this.velY = 0;
         this.width = props.width || 100;
         this.height = props.height || 150;
+        this.static = props.static || false;
 
         // style
         this.background = props.background || 'var(--primario-oscuro-color)';
@@ -61,6 +62,32 @@ export default class Body extends React.Component {
         // Iniciamos el movimiento
         this.setOnMovement(true);
     }
+
+
+    async setSpeed(collision, newSpeed) {
+        
+        try{
+            // change the speed
+
+            if (collision) {
+                this.velX *= -0.3;
+                this.velY *= -0.3;
+            }
+            else{
+                this.velX += newSpeed.x || 0;
+                this.velY += newSpeed.y || 0;
+            }
+            
+            // set the position
+            this.setState({ 
+                x: this.state.x + this.velX, 
+                y: this.state.y + this.velY });
+        }
+        catch(error){
+
+        }
+    }
+
 
     async continueMovement() {
         try {
@@ -112,11 +139,6 @@ export default class Body extends React.Component {
 
         ]
     }
-
-    checkColissions() { }
-
-
-
 
 
     render() {

@@ -1,4 +1,4 @@
-import { globalTimeSpan } from "./physicConstants";
+import { globalA, globalTimeSpan } from "./physicConstants";
 
 /**  The Object that keeps the tracking of the objects and 
  * detect its collides
@@ -22,11 +22,10 @@ export default class Engine {
     }
 
 
-    // addObject(body) {
-    //     console.log(this.objectsInWorld)
-    //     this.objectsInWorld.push(body);
-    //     console.log(this.objectsInWorld)
-    // }
+    addObject(body) {
+        console.log(this.objectsInWorld)
+        this.objectsInWorld.push(body);
+    }
 
 
 
@@ -41,10 +40,24 @@ export default class Engine {
         // check the collisions and stop the bodies
         this.checkCollisions();
 
+        // set gravity
+        this.setGravity()
+
         // repeat again
         this.timer();
     }
 
+
+
+    // set gravity
+    setGravity(){
+        for (let body of this.objectsInWorld) {
+            if (!body.static){
+                const newSpeed = {y : globalA * globalTimeSpan / 200}
+                body.setSpeed(false, newSpeed);
+            }
+        }
+    }
     // check all the possible collisions
     checkCollisions() {
         let index = 0
@@ -66,13 +79,15 @@ export default class Engine {
                     }
 
                     if (collide) {
+                        try {
+                            
+                            if (!body1.static) {
+                                console.log('changing the movement to ', !collide)
+                                body1.setSpeed(true)
+                            }
+                        }
+                        catch (error) { (console.log(error)) }
                     }
-                    try {
-                        console.log('changing the movement to ', !collide)
-                        body1.setOnMovement(!collide);
-                        body2.setOnMovement(!collide);
-                    }
-                    catch (error) { (console.log(error)) }
 
                 }
 
