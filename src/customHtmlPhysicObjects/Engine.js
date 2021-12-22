@@ -37,11 +37,11 @@ export default class Engine {
         const delay = ms => new Promise(res => setTimeout(res, ms));
         await delay(globalTimeSpan);
 
-        // set gravity
-        this.setGravity();
-
         // check the collisions and stop the bodies
         this.checkCollisions();
+
+        // set gravity
+        this.setGravity();
 
         // repeat again
         this.timer();
@@ -69,12 +69,12 @@ export default class Engine {
                 if (body1 != body2) {
                     
                     // First check if any vertix of body1 is in body2
-                    let collide = this.areColliding2(body1, body2);
-
+                    let [collide, power] = this.areColliding2(body1, body2);
+                    
                     // If not try the other way
                     if (!collide) {
 
-                        collide = this.areColliding2(body2, body1);
+                        [collide, power] = this.areColliding2(body2, body1);
 
                     }
 
@@ -84,6 +84,10 @@ export default class Engine {
                                 // check if it is static, otherwise change the speed
                                 if (!body.static) {
                                     body.setSpeed(true);
+                                    if (power>0){
+                                        body.soundOfCollision();
+                                    }
+                                    
                                 }
                             })
                         }
@@ -123,9 +127,18 @@ export default class Engine {
         let relativeSpeed = [vectorCenters,relativeSpeedVector].reduce((v1,v2)=>{
             return v1[0] * v2[0] + v1[1] * v2[1];
         })**2
-        
+
+
+        // extract the power
+        const power = Math.floor(relativeSpeed/10E4);
+
         // make it usefull
         relativeSpeed /= 10E8;
+
+        // set a limit
+        if (relativeSpeed <= 10E-8){
+            relativeSpeed = 0.01
+        }
 
         //  create the couple of vertices licked
         let verticesCouples = body2Vertices.map((vertix,index)=>{
@@ -194,7 +207,7 @@ export default class Engine {
             })
         })
         // we return the collide outcome
-        return collide;
+        return [collide,power];
 
     }
 

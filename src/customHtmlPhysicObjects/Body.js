@@ -1,8 +1,10 @@
+import {Howl, Howler} from 'howler';
 import React from "react";
 import './customObjects.css'
 import { globalA, globalTimeSpan, reboundCoef } from "./physicConstants";
-export default class Body extends React.Component {
 
+import s1 from './../sounds/s1.mp3'
+export default class Body extends React.Component {
     // we should add the key parameter
     static id = 0;
 
@@ -34,9 +36,20 @@ export default class Body extends React.Component {
 
 
         this.onClick = this.onClick.bind(this);
+        this.soundOfCollision = this.soundOfCollision.bind(this);
         this.vertices = this.vertices.bind(this);
         this.clicked = false
 
+
+        // add the speaker
+        const { Howl, Howler } = require('howler');
+        this.audio = new Howl({
+            src: s1,
+            html5: true,
+            onend: function () {
+                console.log('Finished!');
+            }
+        });
 
         this.engine = props.engine;
         
@@ -56,6 +69,8 @@ export default class Body extends React.Component {
     onClick() {
         // this.velX = -this.velX * 0.3;
         // this.velY = -this.velY * 0.3;
+        console.log('hi')
+        this.audio.play();
     }
 
 
@@ -88,6 +103,13 @@ export default class Body extends React.Component {
 
     mySpeed(){
         return [this.velX, this.velY]
+    }
+
+
+    soundOfCollision(){
+        this.onClick();
+        console.log('hi');
+        this.audio.play();
     }
 
     vertices() {
