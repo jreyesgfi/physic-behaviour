@@ -1,6 +1,6 @@
 import React from "react";
 import './customObjects.css'
-import { globalA, globalTimeSpan } from "./physicConstants";
+import { globalA, globalTimeSpan, reboundCoef } from "./physicConstants";
 export default class Body extends React.Component {
 
     // we should add the key parameter
@@ -35,8 +35,6 @@ export default class Body extends React.Component {
 
         this.onClick = this.onClick.bind(this);
         this.vertices = this.vertices.bind(this);
-        this.continueMovement = this.continueMovement.bind(this);
-        this.setOnMovement = this.setOnMovement.bind(this);
         this.clicked = false
 
 
@@ -56,23 +54,20 @@ export default class Body extends React.Component {
     }
 
     onClick() {
-        this.velX = -this.velX * 0.3;
-        this.velY = -this.velY * 0.3;
-
-        // Iniciamos el movimiento
-        this.setOnMovement(true);
+        // this.velX = -this.velX * 0.3;
+        // this.velY = -this.velY * 0.3;
     }
 
 
     async setSpeed(collision, newSpeed) {
-        
+
         try{
             // change the speed
 
             if (collision) {
                 // bounce or stop
-                this.velX *= this.velX**2 > 0.01 ? -0.5: -1;
-                this.velY *= this.velY**2 > 0.01 ? -0.5: -1;
+                this.velX *= this.velX**2 > 0.01 ? -reboundCoef: -1;
+                this.velY *= this.velY**2 > 0.01 ? -reboundCoef: -1;
             }
             else{
                 // else check if we are increasing the speed
@@ -91,40 +86,8 @@ export default class Body extends React.Component {
         }
     }
 
-
-    async continueMovement() {
-        try {
-            // Check if the movement is available
-            if (this.state.onMovement == true) {
-
-                // change the speed value
-                const delay = ms => new Promise(res => setTimeout(res, ms));
-
-                await delay(globalTimeSpan);
-
-                this.velY += globalA * globalTimeSpan / 200;
-
-                this.setState({ y: this.state.y + this.velY }, () => { this.continueMovement() });
-            }
-        }
-        catch (error) {
-            console.log(error);
-        }
-
-    }
-
-    setOnMovement(newValue) {
-
-        // verify if the current value is changing
-        if (this.state.onMovement != newValue) {
-            this.setState({
-                onMovement: newValue,
-            }, () => {
-                // calling the loop of movement
-                this.continueMovement();
-            });
-
-        }
+    mySpeed(){
+        return [this.velX, this.velY]
     }
 
     vertices() {
@@ -163,7 +126,6 @@ export default class Body extends React.Component {
                 style={this.style}
                 className="physicalSquare"
                 onClick={this.onClick}>
-                {this.state.y}
             </div>
         )
     }

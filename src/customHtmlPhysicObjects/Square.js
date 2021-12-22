@@ -8,8 +8,8 @@ export default class Square extends Body {
     constructor(props){
         try{
             let newProps = {...props,
-                height: 15,
-                width: 15, 
+                height: 45,
+                width: 45, 
                 background: '#30a14e'};
             super(newProps);
         }

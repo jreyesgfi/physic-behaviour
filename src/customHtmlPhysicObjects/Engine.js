@@ -37,11 +37,11 @@ export default class Engine {
         const delay = ms => new Promise(res => setTimeout(res, ms));
         await delay(globalTimeSpan);
 
-        // check the collisions and stop the bodies
-        this.checkCollisions();
-
         // set gravity
         this.setGravity();
+
+        // check the collisions and stop the bodies
+        this.checkCollisions();
 
         // repeat again
         this.timer();
@@ -106,6 +106,27 @@ export default class Engine {
         const [body1Vertices, body1Center] = body1.vertices();
         const [body2Vertices, body2Center] = body2.vertices();
 
+        // obtain the vector that join the centers
+        const vectorCenters = body1Center.map((coordenate, index)=>{
+            return coordenate - body2Center[index]
+        });
+        const distanceCenters = vectorCenters.reduce((c1,c2) => (c1**2 + c2**2)**0.5)
+
+        // check if is even possible that both collid
+
+        // vector of relative speed
+        const relativeSpeedVector = body1.mySpeed().map((coordenate,index) =>{
+            return coordenate + body2.mySpeed()[index];
+        })
+
+        // project the relative speed in the vectorBetweenCenters
+        let relativeSpeed = [vectorCenters,relativeSpeedVector].reduce((v1,v2)=>{
+            return v1[0] * v2[0] + v1[1] * v2[1];
+        })**2
+        
+        // make it usefull
+        relativeSpeed /= 10E8;
+
         //  create the couple of vertices licked
         let verticesCouples = body2Vertices.map((vertix,index)=>{
             // if we are in the last vertix we bring back to the start point
@@ -162,11 +183,9 @@ export default class Engine {
                     ////////////////////////////////////////
                     // obtain the cos(angle) and compare to -1
                     const cosAngle = dotProduct / productModules;
-                    //console.log(vectors[0], vectors[1], dotProduct, productModules)
-                    //console.log(vertix1, verticesCouple[0],verticesCouple[1], cosAngle)
 
                     // if the cos in close to -1 the vertix is into the body2
-                    if (cosAngle > -1.003 && cosAngle < -0.997){
+                    if (cosAngle > -(1 + relativeSpeed) && cosAngle < -(1 - relativeSpeed)){
                         collide = true;
                     } 
 
