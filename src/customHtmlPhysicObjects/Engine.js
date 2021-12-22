@@ -41,7 +41,7 @@ export default class Engine {
         this.checkCollisions();
 
         // set gravity
-        this.setGravity()
+        this.setGravity();
 
         // repeat again
         this.timer();
@@ -80,11 +80,12 @@ export default class Engine {
 
                     if (collide) {
                         try {
-                            
-                            if (!body1.static) {
-                                console.log('changing the movement to ', !collide)
-                                body1.setSpeed(true)
-                            }
+                            [body1,body2].forEach((body)=>{
+                                // check if it is static, otherwise change the speed
+                                if (!body.static) {
+                                    body.setSpeed(true);
+                                }
+                            })
                         }
                         catch (error) { (console.log(error)) }
                     }

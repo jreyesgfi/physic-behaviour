@@ -70,12 +70,15 @@ export default class Body extends React.Component {
             // change the speed
 
             if (collision) {
-                this.velX *= -0.3;
-                this.velY *= -0.3;
+                // bounce or stop
+                this.velX *= this.velX**2 > 0.01 ? -0.5: -1;
+                this.velY *= this.velY**2 > 0.01 ? -0.5: -1;
             }
             else{
+                // else check if we are increasing the speed
                 this.velX += newSpeed.x || 0;
                 this.velY += newSpeed.y || 0;
+
             }
             
             // set the position
