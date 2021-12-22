@@ -68,9 +68,12 @@ export default class Body extends React.Component {
         const newPosClicked = [event.screenX,event.screenY];
         if (this.posClicked){
             // move the difference
+            this.velX = newPosClicked[0] - this.posClicked[0];
+            this.velY = newPosClicked[1] - this.posClicked[1];
             this.setState({ 
-                x: this.state.x + newPosClicked[0] - this.posClicked[0], 
-                y: this.state.y + newPosClicked[1] - this.posClicked[1]});
+                x: this.state.x + this.velX, 
+                y: this.state.y + this.velY
+            });
 
             // set the position had clicked
             this.posClicked = newPosClicked;
