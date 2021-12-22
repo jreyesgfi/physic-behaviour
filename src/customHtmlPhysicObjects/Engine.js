@@ -83,11 +83,13 @@ export default class Engine {
                             [body1,body2].forEach((body)=>{
                                 // check if it is static, otherwise change the speed
                                 if (!body.static) {
-                                    body.setSpeed(true);
+                                    // make it sound
                                     if (power>0){
-                                        body.soundOfCollision();
+                                        body.soundOfCollision(power);
                                     }
-                                    
+                                    // make it show up
+                                    body.setSpeed(true);
+    
                                 }
                             })
                         }
@@ -130,7 +132,7 @@ export default class Engine {
 
 
         // extract the power
-        const power = Math.floor(relativeSpeed/10E4);
+        const power = Math.floor(relativeSpeed/10E3);
 
         // make it usefull
         relativeSpeed /= 10E8;

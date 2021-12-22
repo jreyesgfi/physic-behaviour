@@ -69,7 +69,7 @@ export default class Body extends React.Component {
     onClick() {
         // this.velX = -this.velX * 0.3;
         // this.velY = -this.velY * 0.3;
-        console.log('hi')
+        console.log('it should sound')
         this.audio.play();
     }
 
@@ -106,8 +106,8 @@ export default class Body extends React.Component {
     }
 
 
-    soundOfCollision(){
-        this.onClick();
+    soundOfCollision(power){
+
         console.log('hi');
         this.audio.play();
     }
