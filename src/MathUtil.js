@@ -22,7 +22,7 @@ export function scalarProduct2D(vector1, vector2){
 export function rotateVector(origin ,end , angle){
 
     // Change to radians, the unit of angle that the Math functions use
-    const angleInRad *= Math.PI / 180;
+    const angleInRad = 1 / 180 * angle;
 
     // Stablish the initial vector to rotate
     const initialVector = vectorFromTo(origin,end);
@@ -32,7 +32,6 @@ export function rotateVector(origin ,end , angle){
         [Math.cos(angleInRad),-Math.sin(angleInRad)],
         [Math.sin(angleInRad),Math.cos(angleInRad)]
     ];
-    console.log(Math.cos(angle))
 
     // Rotate the vector
     const rotatedVector = rotationMatrix.map((row)=>{
