@@ -1,3 +1,4 @@
+import { sinusVectors2D, vectorFromTo } from "../MathUtil";
 import { globalA, globalTimeSpan } from "./physicConstants";
 
 /**  The Object that keeps the tracking of the objects and 
@@ -69,16 +70,15 @@ export default class Engine {
                 if (body1 != body2) {
                     
                     // First check if any vertix of body1 is in body2
-                    let [collide, power] = this.areColliding2(body1, body2);
+                    let [vertixCollide, power] = this.areColliding2(body1, body2);
+                    let objectInCollide = body1;
                     
                     // If not try the other way
-                    if (!collide) {
-
-                        [collide, power] = this.areColliding2(body2, body1);
-
+                    if (vertixCollide == null) {
+                        objectInCollide = body2;
+                        [vertixCollide, power] = this.areColliding2(body2, body1);
                     }
-
-                    if (collide) {
+                    if (vertixCollide != null) {
                         try {
                             [body1,body2].forEach((body)=>{
                                 // check if it is static, otherwise change the speed
@@ -89,9 +89,11 @@ export default class Engine {
                                     }
                                     // make it show up
                                     body.setSpeed(true);
-    
                                 }
                             })
+
+                            // rotate it
+                            objectInCollide.whereToRotate(vertixCollide);
                         }
                         catch (error) { (console.log(error)) }
                     }
@@ -152,14 +154,14 @@ export default class Engine {
         });
         
         // initialize the collide value to false
-        let collide = false;
+        let vertixCollide = null;
         
         // check if any vertix1 for the body1 have two opposite vertix of body2, 180degres
         body1Vertices.forEach(vertix1 => {
             verticesCouples.forEach(verticesCouple => {
                 
                 // Check if we have already reached a collision
-                if (collide == false) {
+                if (vertixCollide === null) {
                     
                     
                     //////////////////////////////////
@@ -201,7 +203,8 @@ export default class Engine {
 
                     // if the cos in close to -1 the vertix is into the body2
                     if (cosAngle > -(1 + relativeSpeed) && cosAngle < -(1 - relativeSpeed)){
-                        collide = true;
+                        
+                        vertixCollide = vertix1;
                     } 
 
                 }
@@ -209,8 +212,7 @@ export default class Engine {
             })
         })
         // we return the collide outcome
-        return [collide,power];
-
+        return [vertixCollide,power];
     }
 
 }
