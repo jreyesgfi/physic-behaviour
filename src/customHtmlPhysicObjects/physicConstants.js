@@ -7,4 +7,4 @@ export const globalTimeSpan = 10;
 
 export const reboundCoef = 0.42;
 
-export const powerLimit = 30;
+export const powerLimit = 500;

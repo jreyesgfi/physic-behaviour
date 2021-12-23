@@ -130,14 +130,14 @@ export default class Body extends React.Component {
             src: s1,
             html5: true,
             onend: function () {
-                return console.log('Finished!');
+                return
             }
         });
         audio.volume(power > powerLimit ? 1: (power/powerLimit)**0.5);
         audio.play();
     }
 
-    whereToRotate (vertixCollision){
+    whereToRotate (vertixCollision, power){
 
         const center = [this.state.x + this.width / 2, this.state.y + this.height / 2];
         const dir = [this.velX, this.velY];
@@ -149,16 +149,12 @@ export default class Body extends React.Component {
         const sinus = sinusVectors2D(centerVertixVector, dir);
 
         // variation of the angle
-        let varAngle = 0;
+        let varAngle = 20 * power/powerLimit;
 
         // rotate depending on the sign of the sinus
         if (sinus < -0.2){
-            varAngle = 1;
+            varAngle *= -1;
         }
-        if (sinus > 0.2){
-            varAngle = -1;
-        }
-        console.log(varAngle)
         this.setState({angle: this.state.angle + varAngle});
 
     }
