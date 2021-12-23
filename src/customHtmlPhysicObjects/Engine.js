@@ -92,8 +92,9 @@ export default class Engine {
                             })
 
                             // rotate it
-                            console.log('vertices to rotate, ',verticesColliding)
-                            verticesColliding.forEach((vertix)=>objectInCollide.whereToRotate(vertix, power));
+                            if (objectInCollide.static == false){
+                                verticesColliding.forEach((vertix)=>objectInCollide.whereToRotate(vertix, power));
+                            }
                             
                         }
                         catch (error) { (console.log(error)) }

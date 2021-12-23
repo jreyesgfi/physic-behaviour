@@ -4,7 +4,7 @@ import './customObjects.css'
 import { globalA, globalTimeSpan, powerLimit, reboundCoef } from "./physicConstants";
 
 import s1 from './../sounds/s1.wav'
-import { sinusVectors2D, vectorFromTo } from '../MathUtil';
+import { rotateVector, sinusVectors2D, vectorFromTo } from '../MathUtil';
 
 export default class Body extends React.Component {
     // we should add the key parameter
@@ -161,14 +161,25 @@ export default class Body extends React.Component {
 
     vertices() {
 
+        // fix the positionating point
+        const positionatingPoint = [this.state.x, this.state.y];
+
+        // establish the initial coordinates of the vertices regardless the rotation
+        const initialVertices = [
+            [this.state.x, this.state.y],
+            [this.state.x + this.width, this.state.y],
+            [this.state.x, this.state.y + this.height],
+            [this.state.x + this.width, this.state.y + this.height]
+        ];
+
+        // rotate them
+        let rotatedVertices = initialVertices.map((endPoint)=>rotateVector(positionatingPoint,endPoint,this.state.angle));
+
+        console.log(initialVertices, rotatedVertices)
         return [
             // Pass the vertices
-            [
-                [this.state.x, this.state.y],
-                [this.state.x + this.width, this.state.y],
-                [this.state.x, this.state.y + this.height],
-                [this.state.x + this.width, this.state.y + this.height]
-            ],
+            rotatedVertices
+            ,
             // Pass the center
             [this.state.x + this.width / 2, this.state.y + this.height / 2]
 
