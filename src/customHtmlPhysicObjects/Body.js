@@ -149,10 +149,10 @@ export default class Body extends React.Component {
         const sinus = sinusVectors2D(centerVertixVector, dir);
 
         // variation of the angle
-        let varAngle = 20 * power/powerLimit;
+        let varAngle = 2 ;
 
         // rotate depending on the sign of the sinus
-        if (sinus < -0.2){
+        if (sinus < 0){
             varAngle *= -1;
         }
         this.setState({angle: this.state.angle + varAngle});

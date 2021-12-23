@@ -72,15 +72,12 @@ export default class Engine {
                     // First check if any vertix of body1 is in body2
                     let [verticesColliding, power] = this.areColliding2(body1, body2);
                     let objectInCollide = body1;
-                    console.log(verticesColliding)
                     // If not try the other way
                     if (verticesColliding.length == 0) {
                         objectInCollide = body2;
                         [verticesColliding, power] = this.areColliding2(body2, body1);
                     }
-                    console.log(verticesColliding)
                     if (verticesColliding.length != 0) {
-                        console.log('holaaaaaa')
                         try {
                             [body1,body2].forEach((body)=>{
                                 // check if it is static, otherwise change the speed
@@ -95,6 +92,7 @@ export default class Engine {
                             })
 
                             // rotate it
+                            console.log('vertices to rotate, ',verticesColliding)
                             verticesColliding.forEach((vertix)=>objectInCollide.whereToRotate(vertix, power));
                             
                         }
