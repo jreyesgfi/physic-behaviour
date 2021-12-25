@@ -45,7 +45,7 @@ export default class Engine {
         this.setGravity();
 
         // repeat again
-        this.timer();
+        // this.timer();
     }
 
 
@@ -146,7 +146,7 @@ export default class Engine {
             relativeSpeed = 0.01
         }
 
-        //  create the couple of vertices licked
+        //  create the couple of vertices linked
         let verticesCouples = body2Vertices.map((vertix,index)=>{
             // if we are in the last vertix we bring back to the start point
             if (index==body2Vertices.length-1){

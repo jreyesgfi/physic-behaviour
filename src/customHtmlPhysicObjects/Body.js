@@ -80,7 +80,6 @@ export default class Body extends React.Component {
             y:y,
             onMovement:onMovement,
         }
-        console.log('the state is ',this.state)
     }
 
 
@@ -90,15 +89,13 @@ export default class Body extends React.Component {
         // add this body to the world controlled by the engine
         this.engine.addBody(this);
         console.log(this.engine.objectsInWorld);
-        console.log(this.vertices());
-        
+        console.log('the vertices are', this.vertices());
     }
 
     // initial position of the center
     obtainInitialCenter(vertixTopLeft){
         // obtain de half diagonal in the direction regardless the rotation
         const halfDiagonal = [this.width, this.height].map((distance, index)=>{
-            console.log(vertixTopLeft)
             return distance/2 + vertixTopLeft[index]
         });
         return halfDiagonal;
@@ -209,7 +206,6 @@ export default class Body extends React.Component {
         // obtain the other vertices by rotation
         let rotatedVertices = [...Array(4).keys()].map((index)=>{
             // apply the global rotation and another 90 degrees to change the vertix to the following one
-            console.log('totalRotatedVector ', rotateVector(this.center(), vertixTopLeft, this.state.angle + 90 * index))
             return rotateVector(this.center(), vertixTopLeft, this.state.angle + 90 * index)
         })
 
@@ -238,8 +234,9 @@ export default class Body extends React.Component {
         //////////////////////
         // style
         // retrieve the top left vertix regardless the rotation
-        const left = this.vertixTopLeftNoRotated[0];
-        const top = this.vertixTopLeftNoRotated[1];
+        const left = this.vertixTopLeftNoRotated()[0];
+        const top = this.vertixTopLeftNoRotated()[1];
+        console.log('current position',left,top)
         this.style =
         {
             background: this.background,

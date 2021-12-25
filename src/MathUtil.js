@@ -20,26 +20,24 @@ export function scalarProduct2D(vector1, vector2){
 }
 
 export function rotateVector(origin ,end , angle){
-    console.log('the angle is',angle)
+
     // Change to radians, the unit of angle that the Math functions use
     const angleInRad = Math.PI / 180 * angle;
 
     // Stablish the initial vector to rotate
     const initialVector = vectorFromTo(origin,end);
-    console.log('initial vector', initialVector, 'origin', origin)
 
     // Define the rotation matrix
     const rotationMatrix =[
         [Math.cos(angleInRad),-Math.sin(angleInRad)],
         [Math.sin(angleInRad),Math.cos(angleInRad)]
     ];
-    console.log(rotationMatrix)
+
     // Rotate the vector
     const rotatedVector = rotationMatrix.map((row)=>{
         return scalarProduct2D(row,initialVector);
     })
-    console.log('rotated vector', rotatedVector)
-    console.log(sumTwoVectors(origin, rotatedVector))
+
     // Now change the coordinates from bodyFrame to globalFrame
     return sumTwoVectors(origin, rotatedVector);
 
