@@ -98,7 +98,7 @@ export default class Engine {
 
                             // stop the rotation
                             if (verticesColliding.length > 1){
-                                verticesColliding.forEach(()=>objectInCollide.stopRotate());
+                                objectInCollide.stopRotate();
                             }
                             
                         }

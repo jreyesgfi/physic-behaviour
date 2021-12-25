@@ -3,20 +3,20 @@ import React from "react";
 import './customObjects.css'
 import { globalA, globalTimeSpan, powerBottomLimit, powerTopLimit, reboundCoef } from "./physicConstants";
 
-import s1 from './../sounds/s1.wav'
+import s1 from './../sounds/s1.mp3'
 import { rotateVector, sinusVectors2D, vectorFromTo } from '../MathUtil';
 
 export default class Body extends React.Component {
     // we should add the key parameter
-    static id = 0;
+    static id = 1;
 
 
     constructor(props) {
+
         //////////////////////////////////
         // change de id
         const id = Body.id;
         Body.id += 1;
-        props['key'] = id;
         super(props);
 
         //////////////////////////////////
