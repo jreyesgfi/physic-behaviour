@@ -60,6 +60,7 @@ export default class Body extends React.Component {
         // add this body to the world controlled by the engine
         this.engine.addBody(this);
         console.log(this.engine.objectsInWorld);
+        console.log(this.vertices());
     }
 
 
@@ -162,7 +163,7 @@ export default class Body extends React.Component {
     vertices() {
 
         // fix the positionating point
-        const positionatingPoint = [this.state.x, this.state.y];
+        const center = this.center();
 
         // establish the initial coordinates of the vertices regardless the rotation
         const initialVertices = [
@@ -173,17 +174,20 @@ export default class Body extends React.Component {
         ];
 
         // rotate them
-        let rotatedVertices = initialVertices.map((endPoint)=>rotateVector(positionatingPoint,endPoint,this.state.angle));
-
-        console.log(initialVertices, rotatedVertices)
+        let rotatedVertices = initialVertices.map((endPoint)=>rotateVector(center,endPoint,this.state.angle));
         return [
             // Pass the vertices
             rotatedVertices
             ,
             // Pass the center
-            [this.state.x + this.width / 2, this.state.y + this.height / 2]
+            center
 
         ]
+    }
+
+    center(){
+        // Pass the center
+        return [this.state.x + this.width / 2, this.state.y + this.height / 2];
     }
 
 
