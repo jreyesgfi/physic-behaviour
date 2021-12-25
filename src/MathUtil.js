@@ -1,3 +1,10 @@
+//mod of a vector
+export function modulVector(vector){
+    const squaredMod = vector.map((coord)=>coord**2).reduce((c1,c2)=>c1+c2)
+    return ( squaredMod )**0.5
+}
+
+
 //return a the vector that join two points
 export function vectorFromTo(point1, point2){
     // return de vector
@@ -12,7 +19,8 @@ export function sumTwoVectors(vector1,vector2){
 }
 
 export function sinusVectors2D(vector1, vector2){
-    return vector1[0]*vector2[1]-vector2[0]*vector1[1];
+    const totalMod = (modulVector(vector1) * modulVector(vector2))
+    return (vector1[0]*vector2[1]-vector2[0]*vector1[1])/totalMod;
 }
 
 export function scalarProduct2D(vector1, vector2){

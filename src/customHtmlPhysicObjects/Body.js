@@ -189,12 +189,9 @@ export default class Body extends React.Component {
         const sinus = sinusVectors2D(centerVertixVector, dir);
 
         // variation of the angle
-        let varAngle = 2 ;
+        let varAngle = 3*sinus ;
 
         // rotate depending on the sign of the sinus
-        if (sinus < 0){
-            varAngle *= -1;
-        }
         this.setState({angle: this.state.angle + varAngle});
 
     }
@@ -208,17 +205,6 @@ export default class Body extends React.Component {
             // apply the global rotation and another 90 degrees to change the vertix to the following one
             return rotateVector(this.center(), vertixTopLeft, this.state.angle + 90 * index)
         })
-
-        /*const initialVertices = [
-            [this.state.x - this.width/2, this.state.y + this.height/2],
-            [this.state.x + this.width/2, this.state.y + this.height/2],
-            [this.state.x - this.width/2, this.state.y - this.height/2],
-            [this.state.x + this.width/2, this.state.y - this.height/2]
-        ];
-        // rotate them
-        let rotatedVertices = initialVertices.map( (endPoint) => rotateVector(center,endPoint,this.state.angle));
-        */
-
 
         return [
             // Pass the vertices
@@ -236,7 +222,6 @@ export default class Body extends React.Component {
         // retrieve the top left vertix regardless the rotation
         const left = this.vertixTopLeftNoRotated()[0];
         const top = this.vertixTopLeftNoRotated()[1];
-        console.log('current position',left,top)
         this.style =
         {
             background: this.background,

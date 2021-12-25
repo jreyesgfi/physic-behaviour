@@ -45,7 +45,7 @@ export default class Engine {
         this.setGravity();
 
         // repeat again
-        // this.timer();
+        this.timer();
     }
 
 
@@ -92,7 +92,7 @@ export default class Engine {
                             })
 
                             // rotate it
-                            if (objectInCollide.static == false){
+                            if (objectInCollide.static == false && verticesColliding.length == 1){
                                 verticesColliding.forEach((vertix)=>objectInCollide.whereToRotate(vertix, power));
                             }
                             
@@ -141,9 +141,9 @@ export default class Engine {
         // make it usefull
         relativeSpeed /= 10E8;
 
-        // set a limit
-        if (relativeSpeed <= 10E-8){
-            relativeSpeed = 0.01
+        // set a limit, but impose to be positive (the objects are getting closer)
+        if (relativeSpeed <= 10E-8 && relativeSpeed > 0){
+            relativeSpeed = 0.001
         }
 
         //  create the couple of vertices linked
