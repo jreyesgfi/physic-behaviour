@@ -6,6 +6,7 @@ import Square from './customHtmlPhysicObjects/Square';
 import Ground from './customHtmlPhysicObjects/Ground';
 import Engine  from './customHtmlPhysicObjects/Engine';
 import Body from './customHtmlPhysicObjects/Body';
+import Body2 from './customHtmlPhysicObjects/Body copy';
 
 
 function App() {
@@ -23,10 +24,8 @@ function App() {
       </Pantalla1>
       <Square engine={engine}>
       </Square>
-      <Square engine={engine} vertixTopLeff={[200,200]}>
-      </Square>
-      <Body engine={engine} vertixTopLeff={[100,300]}>
-      </Body>
+      <Body2 engine={engine} vertixTopLeff={[200,200]}>
+      </Body2>
       <Ground engine={engine}>
       </Ground>
     </div>

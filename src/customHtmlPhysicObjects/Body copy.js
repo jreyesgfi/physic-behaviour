@@ -3,10 +3,10 @@ import React from "react";
 import './customObjects.css'
 import { globalA, globalTimeSpan, powerBottomLimit, powerTopLimit, reboundCoef } from "./physicConstants";
 
-import s1 from './../sounds/s2.mp3'
+import s1 from './../sounds/s1.mp3'
 import { rotateVector, sinusVectors2D, vectorFromTo } from '../MathUtil';
 
-export default class Body extends React.Component {
+export default class Body2 extends React.Component {
     // we should add the key parameter
     static id = 1;
 
@@ -15,8 +15,8 @@ export default class Body extends React.Component {
 
         //////////////////////////////////
         // change de id
-        const id = Body.id;
-        Body.id += 1;
+        const id = Body2.id;
+        Body2.id += 1;
         super(props);
 
         //////////////////////////////////
@@ -70,7 +70,7 @@ export default class Body extends React.Component {
 
 
         //////////////////////////////////
-        // add the engine to control this body collision
+        // add the engine to control this Body2 collision
         this.engine = props.engine;
 
         //////////////////////////////////
@@ -87,7 +87,7 @@ export default class Body extends React.Component {
 
     // start up the component
     componentDidMount() {
-        // add this body to the world controlled by the engine
+        // add this Body2 to the world controlled by the engine
         this.engine.addBody(this);
         console.log(this.engine.objectsInWorld);
         console.log('the vertices are', this.vertices());

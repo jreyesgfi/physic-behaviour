@@ -52,20 +52,21 @@ export default class Engine {
 
     // set gravity
     setGravity(){
-        for (let body of this.objectsInWorld) {
+        this.objectsInWorld.forEach((body)=>{
             if (!body.static){
                 const newSpeed = {y : globalA * globalTimeSpan / 200}
                 body.setSpeed(false, newSpeed);
             }
-        }
+        });
     }
     // check all the possible collisions
     checkCollisions() {
         let index = 0
         
         for (let body1 of this.objectsInWorld) {
-            for (let body2 of this.objectsInWorld.slice(index + 1, this.objectsInWorld.length)) {
-
+            for (let body2 of this.objectsInWorld.slice(index+1, this.objectsInWorld.length)) {
+                console.log('the bodies are',body1,body2, index)
+                
 
                 if (body1 != body2) {
                     
@@ -108,6 +109,7 @@ export default class Engine {
                 }
 
             }
+            index += 1;
             //  check the boundaries constraints 
             //
         }
