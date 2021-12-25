@@ -20,19 +20,28 @@ export default class Body extends React.Component {
         super(props);
 
         //////////////////////////////////
+        // set the states
+        this.state = {
+            angle: null,
+            x:null,
+            y:null,
+            onMovement:null,
+        }
+
+        //////////////////////////////////
         // shape
         this.width = props.width || 100;
         this.height = props.height || 150;
 
         const vertixTopLeff = props.vertixTopLeff || [100,100];
-        this.state = {angle: props.angle || 0};
+        this.setState({angle: props.angle || 0});
 
         const initialCenter = this.obtainInitialCenter(vertixTopLeff);
-        console.log(initialCenter)
-        this.state = {
+        console.log('initial center', initialCenter)
+        this.setState({
             x: initialCenter[0],
             y: initialCenter[1],
-        };
+        });
         this.center = ()=> [this.state.x, this.state.y];
 
         //////////////////////////////////
@@ -41,9 +50,9 @@ export default class Body extends React.Component {
         this.velX = 0;
         this.velY = 0;
         this.static = props.static || false;
-        this.state = {
+        this.setState({
             onMovement: false
-        }
+        });
 
         //////////////////////////////////
         // style
@@ -84,10 +93,9 @@ export default class Body extends React.Component {
         const halfDiagonal = [this.width, this.height].map((distance, index)=>{
             return distance/2 + vertixTopLeft[index]
         });
-        console.log(halfDiagonal)
-        console.log(rotateVector(vertixTopLeft, halfDiagonal, -this.state.angle))
+        return halfDiagonal;
         // invert the rotation apllied in the vertix to retrieve the center
-        return rotateVector(vertixTopLeft, halfDiagonal, -this.state.angle)
+        //return rotateVector(vertixTopLeft, halfDiagonal, -this.state.angle)
     }
 
     setPositionClicked(position) {
@@ -190,13 +198,14 @@ export default class Body extends React.Component {
 
         // establish the initial coordinates of one vertix (this case top left) regardles the rotation
         let topLeftVertix = this.noRotatedVertixTopLeft();
-
+        debugger;
         // now rotate it
         topLeftVertix = rotateVector(this.center);
 
         // obtain the other vertices by rotation
         let rotatedVertices = [...Array(4).keys()].map((index)=>{
             // apply the global rotation and another 90 degrees to change the vertix to the following one
+            console.log('totalRotatedVector ', rotateVector(this.center, topLeftVertix, this.state.angle + 90*index))
             return rotateVector(this.center, topLeftVertix, this.state.angle + 90*index)
         })
 
@@ -231,7 +240,8 @@ export default class Body extends React.Component {
         //////////////////////
         // style
         // retrieve the top left vertix regardless the rotation
-        const [top, left] = this.noRotatedVertixTopLeft;
+        const left = this.noRotatedVertixTopLeft[0];
+        const top = this.noRotatedVertixTopLeft[1];
         this.style =
         {
             background: this.background,
