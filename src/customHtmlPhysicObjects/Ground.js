@@ -10,8 +10,7 @@ export default class Ground extends Body {
             let newProps = {
                 width : 400,
                 height: 400,
-                x: 50,
-                y:500,
+                vertixTopLeff: [50,500],
                 static: true,
                 engine: props.engine,
             }

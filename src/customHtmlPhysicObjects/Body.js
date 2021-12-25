@@ -12,41 +12,57 @@ export default class Body extends React.Component {
 
 
     constructor(props) {
+        //////////////////////////////////
         // change de id
         const id = Body.id;
         Body.id += 1;
         props['key'] = id;
         super(props);
 
+        //////////////////////////////////
+        // shape
+        const vertixTopLeff = props.vertixTopLeff || [100,100];
+
+        this.width = props.width || 100;
+        this.height = props.height || 150;
+
+        this.state = {angle: props.angle || 0};
+
+        const initialCenter = this.obtainInitialCenter(vertixTopLeff);
         this.state = {
-            x: props.x || 100,
-            y: props.y || 100,
-            angle: props.angle || 0,
-            onMovement: false
+            x: initialCenter[0],
+            y: initialCenter[1],
         };
 
+        //////////////////////////////////
         // dinamic
         this.id = id;
         this.velX = 0;
         this.velY = 0;
-        this.width = props.width || 100;
-        this.height = props.height || 150;
         this.static = props.static || false;
+        this.state = {
+            onMovement: false
+        }
 
+        //////////////////////////////////
         // style
         this.background = props.background || 'var(--primario-oscuro-color)';
 
 
-
+        //////////////////////////////////
+        // binds
         this.soundOfCollision = this.soundOfCollision.bind(this);
         this.vertices = this.vertices.bind(this);
+
+
+        //////////////////////////////////
+        // clicked values
         this.posClicked = null;
         this.clicked = false
 
 
-        // add the speaker
-
-
+        //////////////////////////////////
+        // add the engine to control this body collision
         this.engine = props.engine;
         
 
@@ -63,6 +79,17 @@ export default class Body extends React.Component {
         console.log(this.vertices());
     }
 
+    // initial position of the center
+    obtainInitialCenter(vertixTopLeft){
+
+        // obtain de half diagonal in the direction regardless the rotation
+        const halfDiagonal = [this.width, this.height].map((distance, index)=>{
+            return distance/2 + vertixTopLeft[index]
+        });
+
+        // invert the rotation apllied in the vertix to retrieve the center
+        return rotateVector(vertixTopLeft, halfDiagonal, -this.angle)
+    }
 
     setPositionClicked(position) {
         this.posClicked = position;
