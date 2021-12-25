@@ -70,15 +70,14 @@ export default class Engine {
                 if (body1 != body2) {
                     
                     // First check if any vertix of body1 is in body2
-                    this.areColliding(body1, body2);
-                    let [verticesColliding, power] = this.areColliding2(body1, body2);
+                    let [verticesColliding, power] = this.areColliding(body1, body2) || [null,null];
                     let objectInCollide = body1;
                     // If not try the other way
-                    if (verticesColliding.length == 0) {
+                    if (!verticesColliding) {
                         objectInCollide = body2;
-                        [verticesColliding, power] = this.areColliding2(body2, body1);
+                        [verticesColliding, power] = this.areColliding(body2, body1) || [null,null];
                     }
-                    if (verticesColliding.length != 0) {
+                    if (verticesColliding) {
                         try {
                             [body1,body2].forEach((body)=>{
                                 // check if it is static, otherwise change the speed
@@ -241,10 +240,10 @@ export default class Engine {
 
          ////////////////////////
          // measure how quick the bodies change their position to estimate the acuracy of the impact
-         let totalMovement = moduleVector(body1.mySpeed() ) + moduleVector (body2.mySpeed());
+         let movementCombined = moduleVector(body1.mySpeed() ) + moduleVector (body2.mySpeed());
          
          // set a limit
-         totalMovement = (totalMovement > 3) ? 3 : totalMovement;
+         movementCombined = (movementCombined > 3) ? 3 : movementCombined;
 
          ////////////////////////
         //  create the couple of vertices linked
@@ -269,11 +268,19 @@ export default class Engine {
             });
 
             const sumAngles = angles.reduce((angle1, angle2)=> angle1 + angle2);
-            if (sumAngles > (360 - totalMovement)) {
+            if (sumAngles > (360 - movementCombined)) {
                 console.log('A vertix is colliding', vertix)
                 verticesColliding.push(vertix);
             }
         })
+
+        // check if any vertix collide has found
+        if (verticesColliding.length == 0){
+            return
+        }
+        
+        // otherwise return the vertices and the combined movement
+        return [verticesColliding, movementCombined]
     }
 
 }
