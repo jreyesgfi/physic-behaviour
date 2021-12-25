@@ -38,6 +38,10 @@ export function angle2VectorsDegrees(vector1, vector2){
     return angle *180 /Math.PI;
 }
 
+export function projectVectorInVector(dirVector, vectorToProject){
+    return dirVector.map((coord) => coord * cosinusVectors(dirVector,vectorToProject) )
+}
+
 export function rotateVector(origin ,end , angle){
 
     // Change to radians, the unit of angle that the Math functions use

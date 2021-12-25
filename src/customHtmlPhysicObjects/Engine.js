@@ -1,4 +1,4 @@
-import {angle2VectorsDegrees, moduleVector, sinusVectors2D, vectorFromTo } from "../MathUtil";
+import {angle2VectorsDegrees, moduleVector, projectVectorInVector, sinusVectors2D, sumTwoVectors, vectorFromTo } from "../MathUtil";
 import { globalA, globalTimeSpan } from "./physicConstants";
 
 /**  The Object that keeps the tracking of the objects and 
@@ -240,6 +240,13 @@ export default class Engine {
          }
 
          ////////////////////////
+         // measure how quick the bodies change their position to estimate the acuracy of the impact
+         let totalMovement = moduleVector(body1.mySpeed() ) + moduleVector (body2.mySpeed());
+         
+         // set a limit
+         totalMovement = (totalMovement > 3) ? 3 : totalMovement;
+
+         ////////////////////////
         //  create the couple of vertices linked
         let verticesCouples = body2Vertices.map((vertix,index)=>{
             // if we are in the last vertix we bring back to the start point
@@ -262,7 +269,7 @@ export default class Engine {
             });
 
             const sumAngles = angles.reduce((angle1, angle2)=> angle1 + angle2);
-            if (sumAngles >358){
+            if (sumAngles > (360 - totalMovement)) {
                 console.log('A vertix is colliding', vertix)
                 verticesColliding.push(vertix);
             }
