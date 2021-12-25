@@ -1,5 +1,5 @@
 //mod of a vector
-export function modulVector(vector){
+export function moduleVector(vector){
     const squaredMod = vector.map((coord)=>coord**2).reduce((c1,c2)=>c1+c2)
     return ( squaredMod )**0.5
 }
@@ -18,13 +18,24 @@ export function sumTwoVectors(vector1,vector2){
     return vector1.map((coord,index)=>coord + vector2[index]);
 }
 
-export function sinusVectors2D(vector1, vector2){
-    const totalMod = (modulVector(vector1) * modulVector(vector2))
-    return (vector1[0]*vector2[1]-vector2[0]*vector1[1])/totalMod;
-}
-
 export function scalarProduct2D(vector1, vector2){
     return vector1.map((coord,index)=>coord*vector2[index]).reduce((c1,c2)=>c1+c2);
+}
+
+export function sinusVectors2D(vector1, vector2){
+    const modulesProduct = (moduleVector(vector1) * moduleVector(vector2))
+    return (vector1[0]*vector2[1]-vector2[0]*vector1[1])/modulesProduct;
+}
+
+export function cosinusVectors(vector1,vector2){
+    const modulesProduct = (moduleVector(vector1) * moduleVector(vector2))
+    return scalarProduct2D(vector1,vector2)/modulesProduct;
+}
+
+// return the angle Between2Vectors in degrees
+export function angle2VectorsDegrees(vector1, vector2){
+    const angle = Math.acos( cosinusVectors(vector1, vector2) )
+    return angle *180 /Math.PI;
 }
 
 export function rotateVector(origin ,end , angle){

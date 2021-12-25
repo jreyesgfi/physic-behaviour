@@ -1,4 +1,4 @@
-import { sinusVectors2D, vectorFromTo } from "../MathUtil";
+import {angle2VectorsDegrees, moduleVector, sinusVectors2D, vectorFromTo } from "../MathUtil";
 import { globalA, globalTimeSpan } from "./physicConstants";
 
 /**  The Object that keeps the tracking of the objects and 
@@ -70,6 +70,7 @@ export default class Engine {
                 if (body1 != body2) {
                     
                     // First check if any vertix of body1 is in body2
+                    this.areColliding(body1, body2);
                     let [verticesColliding, power] = this.areColliding2(body1, body2);
                     let objectInCollide = body1;
                     // If not try the other way
@@ -215,6 +216,57 @@ export default class Engine {
         })
         // we return the collide outcome
         return [verticesColliding,power];
+    }
+
+    areColliding(body1, body2){
+        ////////////////////////
+        // retrieve the data
+         const [body1Vertices, body1Center] = body1.vertices();
+         const [body2Vertices, body2Center] = body2.vertices();
+ 
+         ////////////////////////
+        // obtain the vector that join the centers
+         const vectorCenters = body1Center.map((coordenate, index)=>{
+             return coordenate - body2Center[index]
+         });
+         const distanceCenters = moduleVector(vectorCenters)
+
+         ////////////////////////
+        // check if is even possible that both collide
+         const diagonal1 = moduleVector( vectorFromTo(body1Vertices[0], body1Center))
+         const diagonal2 = moduleVector( vectorFromTo(body2Vertices[0], body2Center))
+         if (distanceCenters > (diagonal1 + diagonal2) ){
+             return
+         }
+
+         ////////////////////////
+        //  create the couple of vertices linked
+        let verticesCouples = body2Vertices.map((vertix,index)=>{
+            // if we are in the last vertix we bring back to the start point
+            if (index==body2Vertices.length-1){
+                return [vertix,body2Vertices[0]]
+            }
+            return [vertix,body2Vertices[index+1]]
+        });
+
+        ////////////////////////
+        // check if any vertix of body1 is inside the body2
+        // this will happen when the angles of the body2's sides seeing from body1 vertix sum to 360 degrees
+        const verticesColliding = [];
+
+        body1Vertices.forEach((vertix) =>{
+            let angles = verticesCouples.map((verticesCouple)=>{
+                const vector1 = vectorFromTo(vertix,verticesCouple[0]);
+                const vector2 = vectorFromTo(vertix,verticesCouple[1]);
+                return Math.abs( angle2VectorsDegrees(vector1,vector2) );
+            });
+
+            const sumAngles = angles.reduce((angle1, angle2)=> angle1 + angle2);
+            if (sumAngles >358){
+                console.log('A vertix is colliding', vertix)
+                verticesColliding.push(vertix);
+            }
+        })
     }
 
 }
