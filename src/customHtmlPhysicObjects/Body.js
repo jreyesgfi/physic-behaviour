@@ -1,7 +1,7 @@
 import {Howl, Howler} from 'howler';
 import React from "react";
 import './customObjects.css'
-import { globalA, globalTimeSpan, powerLimit, reboundCoef } from "./physicConstants";
+import { globalA, globalTimeSpan, powerBottomLimit, powerTopLimit, reboundCoef } from "./physicConstants";
 
 import s1 from './../sounds/s1.wav'
 import { rotateVector, sinusVectors2D, vectorFromTo } from '../MathUtil';
@@ -48,6 +48,7 @@ export default class Body extends React.Component {
         this.id = id;
         this.velX = 0;
         this.velY = 0;
+        this.angularSpeed = 0;
         this.static = props.static || false;
         const onMovement = false;
 
@@ -105,6 +106,7 @@ export default class Body extends React.Component {
 
     setPositionClicked(position) {
         this.posClicked = position;
+        this.stopRotate();
 
         //if is static set the speed to 0
         if (this.static){
@@ -155,7 +157,9 @@ export default class Body extends React.Component {
             // set the position
             this.setState({ 
                 x: this.state.x + this.velX, 
-                y: this.state.y + this.velY });
+                y: this.state.y + this.velY,
+                angle: this.state.angle + this.angularSpeed,
+            });
         }
     }
 
@@ -165,6 +169,9 @@ export default class Body extends React.Component {
 
 
     soundOfCollision(power){
+        if (power < powerBottomLimit){
+            return
+        }
         const { Howl, Howler } = require('howler');
         const audio = new Howl({
             src: s1,
@@ -173,13 +180,19 @@ export default class Body extends React.Component {
                 return
             }
         });
-        audio.volume(power > powerLimit ? 1: (power/powerLimit)**0.5);
+        if (power > powerTopLimit){
+            audio.volume = 1;
+            audio.play();
+        }
+        audio.volume(power > powerTopLimit ? 1: (power/powerTopLimit)**0.5);
         audio.play();
+        
+        
     }
 
     whereToRotate (vertixCollision, power){
 
-        const center = [this.state.x + this.width / 2, this.state.y + this.height / 2];
+        const center = this.center();
         const dir = [this.velX, this.velY];
 
         // obtain the vector from center to pointCollision
@@ -189,11 +202,14 @@ export default class Body extends React.Component {
         const sinus = sinusVectors2D(centerVertixVector, dir);
 
         // variation of the angle
-        let varAngle = 3*sinus ;
+        let varAngle = -3*sinus *power;
 
         // rotate depending on the sign of the sinus
-        this.setState({angle: this.state.angle + varAngle});
+        this.angularSpeed = varAngle;
+    }
 
+    stopRotate() {
+        this.angularSpeed = 0;
     }
 
     vertices() {
